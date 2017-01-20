@@ -50,9 +50,14 @@ const routes = [
     component: require('./views/ShopIndex')
   },
   {
+    path: '/Authorize',
+    name: 'Authorize',
+    component: require('./views/Authorize')
+  },
+  {
     path: '*',
     redirect: {
-      name: 'MobileBind'
+      name: 'Authorize'
     }
   }
 ];
