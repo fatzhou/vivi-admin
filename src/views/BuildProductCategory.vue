@@ -13,7 +13,7 @@
            </div>
            <div class="weui-cells__title">选择分类</div>
            <div class="weui-cells weui-cells_checkbox">
-               <label class="weui-cell weui-check__label" for="x11" @click="goBack">
+               <label data-test="ttt" class="weui-cell weui-check__label" @click.stop="selectCategory(a)" for="x11">
                    <div class="weui-cell__bd">
                        <p>分类名称1</p>
                    </div>
@@ -22,8 +22,7 @@
                        <span class="weui-icon-checked"></span>
                    </div>
                </label>
-               <label class="weui-cell weui-check__label" for="x12" @click="goBack">
-
+               <label class="weui-cell weui-check__label" for="x12">
                    <div class="weui-cell__bd">
                        <p>分类名称2</p>
                    </div>
@@ -38,19 +37,38 @@
 </div></template>
 
 <script>
+import util from '../assets/js/util.js'
     export default {
       name: 'MobileBind',
       data() {
           return {
-
+            a: 123,
+            url: util.api.host + util.api.categoryList
           }
       },
-      created: function() {
+      mounted: function() {
+          var postData = {
+            openid: window.info.openid,
+            token: window.info.token,
+            shopid: window.info.shopid
+          };
 
+          this.$http.post(this.url, postData)
+          .then((res)=>{
+            var data = res.body;
+            if(data.code == 0) {
+              // this.$router.push('BuildProduct');
+            } else {
+              alert(data.msg);
+            }
+          });
       },
       methods: {
         goBack() {
           this.$router.push('BuildProduct');
+        },
+        selectCategory(n) {
+          console.log(n)
         }
       }
     }

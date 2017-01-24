@@ -21,12 +21,13 @@ var compiler = webpack(webpackConfig)
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
-  quiet: true
+  stats: {
+    colors: true,
+    chunks: false
+  }
 })
 
-var hotMiddleware = require('webpack-hot-middleware')(compiler, {
-  log: () => {}
-})
+var hotMiddleware = require('webpack-hot-middleware')(compiler)
 // force page reload when html-webpack-plugin template changes
 compiler.plugin('compilation', function (compilation) {
   compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
@@ -56,19 +57,15 @@ app.use(hotMiddleware)
 
 // serve pure static assets
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
-app.use(staticPath, express.static('./static'))
-
-var uri = 'http://localhost:' + port
-
-devMiddleware.waitUntilValid(function () {
-  console.log('> Listening at ' + uri + '\n')
-})
+app.use(staticPath, express.static('./src/assets'))
 
 module.exports = app.listen(port, function (err) {
   if (err) {
     console.log(err)
     return
   }
+  var uri = 'http://localhost:' + port
+  console.log('Listening at ' + uri + '\n')
 
   // when env is testing, don't need open it
   if (process.env.NODE_ENV !== 'testing') {

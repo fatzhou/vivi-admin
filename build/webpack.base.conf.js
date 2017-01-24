@@ -12,7 +12,7 @@ var useCssSourceMap = cssSourceMapDev || cssSourceMapProd
 
 module.exports = {
   entry: {
-    app: './src/main.js'
+    app: ['./src/main.js'],
   },
   output: {
     path: config.build.assetsRoot,
@@ -37,17 +37,13 @@ module.exports = {
       // {
       //   test: /\.vue$/,
       //   loader: 'eslint',
-      //   include: [
-      //     path.join(projectRoot, 'src')
-      //   ],
+      //   include: projectRoot,
       //   exclude: /node_modules/
       // },
       // {
       //   test: /\.js$/,
       //   loader: 'eslint',
-      //   include: [
-      //     path.join(projectRoot, 'src')
-      //   ],
+      //   include: projectRoot,
       //   exclude: /node_modules/
       // }
     ],
@@ -59,9 +55,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel',
-        include: [
-          path.join(projectRoot, 'src')
-        ],
+        include: projectRoot,
         exclude: /node_modules/
       },
       {

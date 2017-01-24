@@ -49,17 +49,12 @@ const routes = [
     name: 'ShopIndex',
     component: require('./views/ShopIndex')
   },
-  {
-    path: '/Authorize',
-    name: 'Authorize',
-    component: require('./views/Authorize')
-  },
-  {
-    path: '*',
-    redirect: {
-      name: 'Authorize'
-    }
-  }
+  // {
+  //   path: '*',
+  //   redirect: {
+  //     name: 'MobileBind'
+  //   }
+  // }
 ];
 
 module.exports = routes;

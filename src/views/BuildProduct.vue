@@ -21,7 +21,7 @@
                                     </li>
                                 </ul>
                                 <div class="weui-uploader__input-box">
-                                    <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="">
+                                    <input id="uploaderInput" @change="uploadFileChange" class="weui-uploader__input" type="file" accept="image/*" multiple="">
                                 </div>
                             </div>
                         </div>
@@ -67,15 +67,49 @@
 </template>
 
 <script>
+import util from '../assets/js/util.js'
     export default {
       name: 'BuildProduct',
       data() {
           return {
-
+            fileApi: util.api.host + util.api.fileApi,
+            imgList: []
           }
       },
       created: function() {
 
+      },
+      methods: {
+        uploadFileChange(e) {
+          console.log(e)
+          var files = e.target.files;
+          for (var i = 0, f; f = files[i]; i++) {
+            this.uploadFile(f);
+          }
+        },
+        uploadFile(file) {
+          var formData = new FormData();
+          formData.append('file', file);
+
+         // var oReq = new XMLHttpRequest();
+         //  oReq.open("POST", this.fileApi, true);
+         //  oReq.onload = function(oEvent) {
+         //    if (oReq.status == 200) {
+         //      alert(1)
+         //    } else {
+         //      alert(2)
+         //    }
+         //  };
+         //  oReq.send(formData);
+          this.$http.post(this.fileApi, formData)
+          .then((response) => {
+            alert(1)
+            console.log('File sent...'); // this block is never triggered
+            console.log(response);
+          }, (response) => {
+            console.log('Error occurred...');
+          });
+        }
       }
     }
 </script>

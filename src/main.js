@@ -12,6 +12,11 @@ const router = new VueRouter({
   routes
 })
 
+window.info = {
+  openid: 'abcd',
+  token: 'xxbb'
+};
+
 const app = new Vue({
   router
 }).$mount('#app')
