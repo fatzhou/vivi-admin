@@ -9,7 +9,7 @@
                 <div class="panel-bd">
                     <img src="../assets/pic/1.png" />
                     <div class="tips">
-                        <a href="javascript:;" @click="previewShop">预览</a><a href="javascript:;" class="">使用<i class="weui-icon-circle"></i></a>
+                        <a href="javascript:;" @click="previewShop(1)">预览</a><a href="javascript:;" @click="useShop(1)"     :class="{current: styleSelected==1}">使用<i class="weui-icon-circle"></i></a>
                     </div>
                 </div>
             </div>
@@ -18,7 +18,7 @@
                 <div class="panel-bd">
                     <img src="../assets/pic/1.png" />
                     <div class="tips">
-                        <a href="javascript:;" @click="previewShop">预览</a><a href="javascript:;" class="current">使用<i class="weui-icon-circle"></i> </a>
+                        <a href="javascript:;" @click="previewShop(2)">预览</a><a href="javascript:;" @click="useShop(2)" :class="{current: styleSelected==2}">使用<i class="weui-icon-circle"></i> </a>
                     </div>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                 <div class="panel-bd">
                     <img src="../assets/pic/1.png" />
                     <div class="tips">
-                        <a href="javascript:;" @click="previewShop">预览</a><a href="javascript:;" class="">使用<i class="weui-icon-circle"></i></a>
+                        <a href="javascript:;" @click="previewShop(3)">预览</a><a href="javascript:;" @click="useShop(3)" :class="{current: styleSelected==3}">使用<i class="weui-icon-circle"></i></a>
                     </div>
                 </div>
             </div>
@@ -38,13 +38,13 @@
                 <div class="panel-bd">
                     <img src="../assets/pic/1.png" />
                     <div class="tips">
-                        <a href="javascript:;" @click="previewShop">预览</a><a href="javascript:;" class="">使用<i class="weui-icon-circle"></i> </a>
+                        <a href="javascript:;" @click="previewShop(4)">预览</a><a href="javascript:;" @click="useShop(4)" :class="{current: styleSelected==4}">使用<i class="weui-icon-circle"></i> </a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="weui-btn-area">
-            <router-link class="weui-btn weui-btn_plain-primary" href="javascript:" id="showTooltips" to="BuildIndex">下一步</router-link>
+            <a class="weui-btn weui-btn_plain-primary" href="javascript:" @click="goNext">下一步</a>
         </div>
     </div>
 
@@ -57,7 +57,7 @@
                 <div class="weui-dialog__hd"><strong class="weui-dialog__title">商品列表展示</strong></div>
                 <div class="weui-dialog__bd"><img src="../assets/pic/1.png" /></div>
                 <div class="weui-dialog__ft">
-                    <a href="javascript:;" class="">使用<i class="weui-icon-circle"></i></a>
+                    <a href="javascript:;" :class="{current: styleSelected==previewSelected}" @click="useNow" class="">使用<i class="weui-icon-circle"></i></a>
                 </div>
             </div>
         </div>
@@ -71,15 +71,29 @@
       data() {
           return {
             preview: false,
-
+            styleSelected: 1,
+            previewSelected: 1,
           }
       },
+      created() {
+        document.title = '选择店铺功能';
+      },
       methods: {
-        previewShop() {
+        previewShop(n) {
+          this.previewSelected = n;
           this.preview = true;
         },
-        cancelPreview() {
+        useShop(n) {
+          this.styleSelected = n;
+        },
+        useNow() {
+          this.styleSelected = this.previewSelected;
+        },
+        cancelPreview(n) {
           this.preview = false;
+        },
+        goNext() {
+          this.$router.push('BuildIndex');
         }
       }
     }

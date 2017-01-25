@@ -5,7 +5,7 @@
         <div class="weui-cells">
             <div class="weui-cell">
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder="小铺名字">
+                    <input class="weui-input" v-model="shopName" type="text" placeholder="小铺名字">
                 </div>
             </div>
         </div>
@@ -17,11 +17,11 @@
                             <p class="weui-uploader__title">上传LOGO</p>
                         </div>
                         <div class="weui-uploader__bd">
-                            <ul class="weui-uploader__files" id="uploaderFiles"  style="display: none">
-                                <li class="weui-uploader__file" style="background-image:url(./images/pic_160.png)"></li>
+                            <ul class="weui-uploader__files" id="uploaderFiles" v-if="logo.length>0">
+                                <li class="weui-uploader__file" :style="{'background-image':'url('+logo+')'}"></li>
                             </ul>
                             <div class="weui-uploader__input-box">
-                                <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="">
+                                <input id="uploaderInput" class="weui-uploader__input" @change="uploadFileChange" type="file" accept="image/*" multiple="">
                             </div>
                             <a href="javascript:;" class="demo">示例</a>
                         </div>
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="weui-btn-area">
-            <router-link class="weui-btn weui-btn_plain-primary" href="javascript:" id="showTooltips" to="CreateShopStep2">下一步</router-link>
+            <a class="weui-btn weui-btn_plain-primary" href="javascript:;" @click="goNext" id="showTooltips">下一步</a>
         </div>
     </div>
 </div>
@@ -38,15 +38,78 @@
 </template>
 
 <script>
+import util from '../assets/js/util.js'
     export default {
       name: 'CreateShopStep1',
       data() {
           return {
-
+            url: util.api.host + util.api.buildShop,
+            shopName: '',
+            fileApi: util.api.host + util.api.fileApi,
+            logo: ''
           }
       },
       created: function() {
+        document.title = '创建小铺';
+      },
+      methods: {
+        uploadFileChange(e) {
+          var files = e.target.files;
+          for (var i = 0, f; f = files[i]; i++) {
+            this.uploadFile(f);
+          }
+        },
+        uploadFile(file) {
+          var formData = new FormData();
+          formData.append('thumbnail', file);
 
+          this.$http.post(this.fileApi, formData)
+          .then((response) => {
+            var data = response.body;
+            if(data.code == 0) {
+              this.logo = data.url;
+            } else {
+              alert(data.msg);
+            }
+          }, (response) => {
+            console.log('Error occurred...');
+          });
+        },
+        checkForm() {
+          var flag = util.checkForm([{
+            name: '店铺名称',
+            data: this.shopName
+          },
+          {
+            name: '店铺LOGO',
+            data: this.logo
+          }
+            ]);
+          return flag;
+        },
+        goNext() {
+          console.log(1234)
+          if(!this.checkForm()) {
+            return false;
+          }
+          var postData = {
+            openid: window.info.openid,
+            token: window.info.token,
+            shopid: window.info.shopid,
+            name: this.shopName,
+            logo: this.logo,
+            mobile: window.info.mobile
+          };
+          this.$http.post(this.url, postData)
+          .then((res)=>{
+            var data = res.body;
+            if(data.code == 0) {
+              this.$router.push('CreateShopStep2');
+            } else {
+              alert(data.msg);
+            }
+          });
+        }
       }
     }
 </script>

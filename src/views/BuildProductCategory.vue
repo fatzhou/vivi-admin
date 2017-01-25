@@ -11,23 +11,14 @@
                    </div>
                </router-link>
            </div>
-           <div class="weui-cells__title">选择分类</div>
+           <div class="weui-cells__title" v-if="categoryList.length>0">选择分类</div>
            <div class="weui-cells weui-cells_checkbox">
-               <label data-test="ttt" class="weui-cell weui-check__label" @click.stop="selectCategory(a)" for="x11">
+               <label v-for="item,index in categoryList" @click="goBack(item.classid, item.name)"  class="weui-cell weui-check__label" >
                    <div class="weui-cell__bd">
-                       <p>分类名称1</p>
+                       <p>{{item.name}}</p>
                    </div>
                    <div class="weui-cell__ft">
-                       <input type="radio" class="weui-check" name="radio1" id="x11">
-                       <span class="weui-icon-checked"></span>
-                   </div>
-               </label>
-               <label class="weui-cell weui-check__label" for="x12">
-                   <div class="weui-cell__bd">
-                       <p>分类名称2</p>
-                   </div>
-                   <div class="weui-cell__ft">
-                       <input type="radio" name="radio1" class="weui-check" id="x12" checked="checked">
+                       <input type="radio" class="weui-check" name="radio1" >
                        <span class="weui-icon-checked"></span>
                    </div>
                </label>
@@ -42,8 +33,8 @@ import util from '../assets/js/util.js'
       name: 'MobileBind',
       data() {
           return {
-            a: 123,
-            url: util.api.host + util.api.categoryList
+            url: util.api.host + util.api.categoryList,
+            categoryList: []
           }
       },
       mounted: function() {
@@ -57,6 +48,7 @@ import util from '../assets/js/util.js'
           .then((res)=>{
             var data = res.body;
             if(data.code == 0) {
+              this.categoryList = data.classlist;
               // this.$router.push('BuildProduct');
             } else {
               alert(data.msg);
@@ -64,8 +56,14 @@ import util from '../assets/js/util.js'
           });
       },
       methods: {
-        goBack() {
-          this.$router.push('BuildProduct');
+        goBack(id, name) {
+          this.$router.push({
+            name: 'BuildProduct',
+            params: {
+              categoryId: id,
+              categoryName: name
+            }
+          });
         },
         selectCategory(n) {
           console.log(n)

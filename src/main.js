@@ -13,8 +13,10 @@ const router = new VueRouter({
 })
 
 window.info = {
-  openid: 'abcd',
-  token: 'xxbb'
+  openid: '11112222333344',
+  token: 'aaabbcc',
+  shopid: 'e38571534f6c4d6bd61a05876ce42c85e450731b',
+  mobile: '18111111111'
 };
 
 const app = new Vue({

@@ -2,6 +2,15 @@
 <div class="container build">
     <div class="wrap product">
         <div class="content">
+                      <!--商品价格-->
+            <div class="weui-cells__title">商品名称</div>
+            <div class="weui-cells">
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" v-model="name" type="text" placeholder="请输入商品名称">
+                    </div>
+                </div>
+            </div>
             <!--添加图片-->
             <div class="weui-cells weui-cells_form">
                 <div class="weui-cell">
@@ -9,18 +18,13 @@
                         <div class="weui-uploader">
                             <div class="weui-uploader__hd">
                                 <p class="weui-uploader__title">添加图片</p>
-                                <div class="weui-uploader__info">0/5</div>
+                                <div class="weui-uploader__info"><span>{{imgList.length}}</span>/5</div>
                             </div>
                             <div class="weui-uploader__bd">
                                 <ul class="weui-uploader__files" id="uploaderFiles">
-                                    <li class="weui-uploader__file" style="background-image:url(../assets/img/pic_160.png)"></li>
-                                    <li class="weui-uploader__file weui-uploader__file_status" style="background-image:url(../assets/img/pic_160.png)">
-                                        <div class="weui-uploader__file-content">
-                                            <i class="weui-icon-warn"></i>
-                                        </div>
-                                    </li>
+                                    <li class="weui-uploader__file" v-for="item in imgList" :style="{'background-image':'url('+item+')'}"></li>
                                 </ul>
-                                <div class="weui-uploader__input-box">
+                                <div class="weui-uploader__input-box" v-if="imgList.length<5">
                                     <input id="uploaderInput" @change="uploadFileChange" class="weui-uploader__input" type="file" accept="image/*" multiple="">
                                 </div>
                             </div>
@@ -33,8 +37,8 @@
             <div class="weui-cells weui-cells_form">
                 <div class="weui-cell">
                     <div class="weui-cell__bd">
-                        <textarea class="weui-textarea" placeholder="请输入商品描述" rows="3"></textarea>
-                        <div class="weui-textarea-counter"><span>0</span>/200</div>
+                        <textarea class="weui-textarea" v-model="description" maxLength="200" placeholder="请输入商品描述" rows="3"></textarea>
+                        <div class="weui-textarea-counter"><span>{{description.length}}</span>/200</div>
                     </div>
                 </div>
             </div>
@@ -43,7 +47,7 @@
             <div class="weui-cells">
                 <div class="weui-cell">
                     <div class="weui-cell__bd">
-                        <input class="weui-input" type="text" placeholder="请输入价格（单位元）">
+                        <input class="weui-input" v-model="price" type="text" placeholder="请输入价格（单位元）">
                     </div>
                 </div>
             </div>
@@ -52,14 +56,14 @@
             <div class="weui-cells">
                 <router-link class="weui-cell weui-cell_access" href="javascript:;" to="BuildProductCategory">
                     <div class="weui-cell__bd">
-                        <p>请添加商品分类</p>
+                        <p>{{categoryName}}</p>
                     </div>
                     <div class="weui-cell__ft">
                     </div>
                 </router-link>
             </div>
             <div class="weui-btn-area">
-                <router-link class="weui-btn weui-btn_primary" to="ProductIndex" href="javascript:" id="showTooltips">完成并添加下一步</router-link>
+                <a  @click.prevent="goNext" class="weui-btn weui-btn_primary" to="ProductIndex" href="javascript:" id="showTooltips">完成并添加下一步</a>
             </div>
         </div>
     </div>
@@ -73,15 +77,72 @@ import util from '../assets/js/util.js'
       data() {
           return {
             fileApi: util.api.host + util.api.fileApi,
-            imgList: []
+            url: util.api.host + util.api.buildProduct,
+            imgList: [],
+            description: '',
+            name: '',
+            price: '',
+            category: '',
+            categoryName: '请添加商品分类'
           }
       },
       created: function() {
-
+        document.title = '添加商品';
+      },
+      mounted() {
+        if(this.$route.params.categoryId) {
+          this.category = this.$route.params.categoryId;
+          this.categoryName  = this.$route.params.categoryName;
+        }
       },
       methods: {
+        checkForm() {
+          var flag = util.checkForm([
+          {
+            name: '商品名称',
+            data: this.name
+          },
+          {
+            name: '商品图片',
+            data: this.imgList.join('|')
+          },
+          {
+            name: '商品价格',
+            data: this.price
+          },
+          {
+            name: '商品分类',
+            data: this.category
+          }]);
+          console.log(this.imgList,'abcd')
+          return flag;
+        },
+        goNext() {
+          if(!this.checkForm()) {
+            return false;
+          }
+          var postData = {
+            openid: window.info.openid,
+            token: window.info.token,
+            shopid: window.info.shopid,
+            classid: parseInt(this.category),
+            // prodid: '',
+            name: this.name,
+            desc: this.description,
+            price: this.price,
+            image: this.imgList.join('|')
+          };
+          this.$http.post(this.url, postData)
+          .then((res)=>{
+            var data = res.body;
+            if(data.code == 0) {
+              this.$router.push('BuildProduct');
+            } else {
+              alert(data.msg);
+            }
+          });
+        },
         uploadFileChange(e) {
-          console.log(e)
           var files = e.target.files;
           for (var i = 0, f; f = files[i]; i++) {
             this.uploadFile(f);
@@ -89,23 +150,16 @@ import util from '../assets/js/util.js'
         },
         uploadFile(file) {
           var formData = new FormData();
-          formData.append('file', file);
+          formData.append('thumbnail', file);
 
-         // var oReq = new XMLHttpRequest();
-         //  oReq.open("POST", this.fileApi, true);
-         //  oReq.onload = function(oEvent) {
-         //    if (oReq.status == 200) {
-         //      alert(1)
-         //    } else {
-         //      alert(2)
-         //    }
-         //  };
-         //  oReq.send(formData);
           this.$http.post(this.fileApi, formData)
           .then((response) => {
-            alert(1)
-            console.log('File sent...'); // this block is never triggered
-            console.log(response);
+            var data = response.body;
+            if(data.code == 0) {
+              this.imgList.push(data.url);
+            } else {
+              alert(data.msg);
+            }
           }, (response) => {
             console.log('Error occurred...');
           });

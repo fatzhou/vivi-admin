@@ -2,7 +2,10 @@ var api = {
   host: 'https://www.wxpuu.com',
   mobile: '/api/shop/register',
   fileApi: '/api/upload',
-  categoryList: '/api/shop/classquery'
+  categoryList: '/api/shop/classquery',
+  buildShop: '/api/shop/update',
+  buildProduct: '/api/shop/dealprod',
+  addCategory: '/api/shop/dealclass'
 }
 
 var validator = {
