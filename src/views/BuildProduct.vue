@@ -126,11 +126,12 @@ import util from '../assets/js/util.js'
             token: window.info.token,
             shopid: window.info.shopid,
             classid: parseInt(this.category),
-            // prodid: '',
+            prodid: '',
             name: this.name,
             desc: this.description,
             price: this.price,
-            image: this.imgList.join('|')
+            image: this.imgList.join('|'),
+            status: 0
           };
           this.$http.post(this.url, postData)
           .then((res)=>{
