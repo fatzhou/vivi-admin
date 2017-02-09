@@ -37,7 +37,7 @@ import util from '../assets/js/util.js'
             categoryList: []
           }
       },
-      mounted: function() {
+      activated: function() {
           var postData = {
             openid: window.info.openid,
             token: window.info.token,

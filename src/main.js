@@ -13,11 +13,23 @@ const router = new VueRouter({
 })
 
 window.info = {
-  openid: '11112222333344',
-  token: 'aaabbcc',
-  shopid: 'e38571534f6c4d6bd61a05876ce42c85e450731b',
-  mobile: '18111111111'
+  openid: '',
+  token: '',
+  shopid: '',
+  mobile: ''
 };
+
+// Vue.mixin({
+//   beforeMount: function () {
+//     document.getElementById('app').scrollTop = 0;
+//   },
+//   mounted: function() {
+//     if(!window.info.openid && location.hash.indexOf('MobileBind') == -1) {
+//       // location.reload();
+//       router.push('MobileBind');
+//     }
+//   }
+// })
 
 const app = new Vue({
   router

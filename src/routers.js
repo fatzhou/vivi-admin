@@ -35,26 +35,26 @@ const routes = [
     component: require('./views/BuildProductCategoryAdd')
   },
   {
-    path: '/ProductIndex',
-    name: 'ProductIndex',
-    component: require('./views/ProductIndex')
-  },
-  {
     path: '/EditProduct',
     name: 'EditProduct',
     component: require('./views/EditProduct')
+  },
+  {
+    path: '/EditProductItem/:item/:value',
+    name: 'EditProductItem',
+    component: require('./views/EditProductItem')
   },
   {
     path: '/ShopIndex',
     name: 'ShopIndex',
     component: require('./views/ShopIndex')
   },
-  // {
-  //   path: '*',
-  //   redirect: {
-  //     name: 'MobileBind'
-  //   }
-  // }
+  {
+    path: '*',
+    redirect: {
+      name: 'MobileBind'
+    }
+  }
 ];
 
 module.exports = routes;

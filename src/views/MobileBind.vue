@@ -4,15 +4,10 @@
         <div class="weui-cells__title">绑定手机号，方便追踪订单</div>
         <div class="weui-cells">
 
-            <div class="weui-cell weui-cell_vcode">
-                <div class="weui-cell__hd">
-                    <label class="weui-label">手机号</label>
-                </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">手机号</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="tel" v-model="mobile"  placeholder="请输入手机号">
-                </div>
-                <div class="weui-cell__ft" >
-                    <button class="weui-vcode-btn">获取验证码</button>
+                    <input class="weui-input" type="tel" v-model="mobile" placeholder="请输入手机号">
                 </div>
             </div>
             <div class="weui-cell">

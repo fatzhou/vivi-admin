@@ -4,12 +4,8 @@
         <!--今日数据-->
         <div class="today-data">
             <div class="weui-navbar">
-                <div class="weui-navbar__item weui-bar__item_on">
-                    <a href="#">今日数据</a>
-                </div>
-                <div class="weui-navbar__item">
-                    <a href="#">历史数据</a>
-
+                <div v-for="item,index in dataTab" class="weui-navbar__item " :class="{'weui-bar__item_on':currentTab===index}">
+                    <a href="javascript:;" @click="toggleDataView(index)">{{item.name}}</a>
                 </div>
             </div>
 
@@ -62,15 +58,14 @@
         <!--店铺信息-->
         <div class="xiaopu-container">
             <div class="weui-cells">
-
-                <a class="weui-cell weui-cell_access" href="javascript:;">
-                    <div class="weui-cell__hd"><img src="../assets/img/icon_tabbar.png" alt=""></div>
+                <router-link to="EditProduct" class="weui-cell weui-cell_access" href="javascript:;">
+                    <div class="weui-cell__hd"><img :src="shopInfo.logo" alt=""></div>
                     <div class="weui-cell__bd">
-                        <h3>迷你小铺</h3>
-                        <p>辅助文案</p>
+                        <h3>{{shopInfo.name}}</h3>
+                        <p>{{shopInfo.mobile}}</p>
                     </div>
-                    <div class="weui-cell__ft"><img src="../assets/img/icon_tabbar.png" alt=""></div>
-                </a>
+                    <div class="weui-cell__ft" id="qrcode-wrap"></div>
+                </router-link>
             </div>
             <div class="weui-grids">
                 <a href="javascript:;" class="weui-grid">
@@ -102,15 +97,70 @@
 </template>
 
 <script>
+  import util from '../assets/js/util.js'
+  import QR from '../assets/js/qrcode.min.js'
     export default {
       name: 'ShopIndex',
       data() {
           return {
+            url: util.api.host + util.api.shopInfo,
+            dataTab: [
+            {
+              name: '今日数据'
+            },
+            {
+              name: '历史数据'
+            }],
+            currentTab: 0,
+            shopInfo: {},
 
           }
       },
-      created: function() {
+      computed: {
+        qrcode() {
+          var div = document.createElement('div');
+          var qr = new QRCode(div, {
+              text: "http://jindo.dev.naver.com/collie",
+              width: 36,
+              height: 36,
+              colorDark : "#000000",
+              colorLight : "#ffffff",
+              correctLevel : QRCode.CorrectLevel.H
+          });
+          return div;
+        }
+      },
+      mounted: function() {
+        document.title = '微小铺';
+      },
+      activated() {
+          var postData = {
+            openid: window.info.openid,
+            token: window.info.token,
+          };
 
+          this.$http.post(this.url, postData)
+          .then((res)=>{
+            var data = res.body;
+            console.log(data)
+            if(data.code == 0) {
+              this.shopInfo = {
+                logo: data.logo,
+                name: data.name,
+                mobile: data.mobile
+              }
+              console.log(this.shopInfo);
+              // this.shopQrcode = this.qrcode;
+              document.getElementById('qrcode-wrap').append(this.qrcode);
+            } else {
+              alert(data.msg);
+            }
+          });
+      },
+      methods: {
+        toggleDataView(index) {
+          this.currentTab = index;
+        }
       }
     }
 </script>

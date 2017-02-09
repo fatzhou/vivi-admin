@@ -1,47 +1,152 @@
 <template>
-<div class="container build">
-    <div class="wrap">
-         <p class="notic">
-             <i class="weui-icon-info-circle"></i><span>小铺已生成，请添加商品信息</span>
-         </p>
-        <div class="content">
-            <router-link href="#" class="no-add" to="BuildProduct"><i class="ico-addprodcut"></i><span>添加商品</span> </router-link>
-        </div>
-    </div>
-    <footer>
-        <div class="weui-tabbar">
+  <div class="container build">
+      <div v-if="categoryList.length===0" class="wrap">
+           <p class="notic">
+               <i class="weui-icon-info-circle"></i>
+               <span>小铺已生成，请添加商品信息</span>
+           </p>
+          <div class="content">
+              <router-link href="javascript:;" class="no-add" to="BuildProduct">
+                <i class="ico-addprodcut"></i>
+                <span>添加商品</span>
+              </router-link>
+          </div>
+      </div>
 
-            <a href="javascript:;" class="weui-tabbar__item weui-bar__item_on">
-                <img src="../assets/img//icon_tabbar.png" alt="" class="weui-tabbar__icon">
+      <div v-else class="wrap">
+          <div class="shop-wrap">
+              <div class="shop-layer">
+                  <div class="weui-panel__hd">
+                      <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg" :class="{'current': -1==currentIndex}">
+                          全部分类
+                      </a>
+                      <a href="javascript:void(0);" v-for="item,index in categoryList" @click="updateItemInCategory(item.classid, index)" class="weui-media-box weui-media-box_appmsg eps" :class="{'current': index==currentIndex}">
+                          {{item.name}}
+                      </a>
+                  </div>
+                  <div class="weui-panel__bd">
+                      <div href="javascript:void(0);" v-for="item in itemList" class="weui-media-box weui-media-box_appmsg">
+                          <div class="weui-media-box__hd">
+                              <img class="weui-media-box__thumb"
+                                   :src="item.image.split('|')[0]"
+                                   alt="">
+                          </div>
+                          <div class="weui-media-box__bd">
+                              <h4 class="weui-media-box__title">{{item.name}}</h4>
 
-                <p class="weui-tabbar__label">首页</p>
-            </a>
-            <a href="javascript:;" class="weui-tabbar__item">
-                    <span style="display: inline-block;position: relative;">
-                        <img src="../assets/img//icon_tabbar.png" alt="" class="weui-tabbar__icon">
-                    </span>
+                              <p class="weui-media-box__desc">{{item.desc}}</p>
 
-                <p class="weui-tabbar__label">小铺中心</p>
-            </a>
-        </div>
-    </footer>
-</div>
+                              <div class="weui-media-box__info"><span>{{item.price}}元</span>
+
+                                  <p class="price-oper">
+                                    <a href="javascript:;" class="">
+                                      <i class="weui-icon-info-circle"></i>
+                                    </a>
+                                  </p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <p class="notic">
+              <i class="weui-icon-info-circle"></i><span>当前页面为你客户看到的效果。</span>
+          </p>
+      </div>
+
+      <footer>
+          <div class="weui-tabbar">
+              <router-link to="BuildIndex" href="javascript:;" class="weui-tabbar__item weui-bar__item_on">
+                  <img src="../assets/img//icon_tabbar.png" alt="" class="weui-tabbar__icon">
+
+                  <p class="weui-tabbar__label">首页</p>
+              </router-link>
+              <router-link to="ShopIndex" href="javascript:;" class="weui-tabbar__item">
+                      <span style="display: inline-block;position: relative;">
+                          <img src="../assets/img//icon_tabbar.png" alt="" class="weui-tabbar__icon">
+                      </span>
+
+                  <p class="weui-tabbar__label">小铺中心</p>
+              </router-link>
+          </div>
+      </footer>
+  </div>
 </template>
 
 <script>
+  import util from '../assets/js/util.js'
     export default {
       name: 'BuildIndex',
       data() {
           return {
-
+            categoryUrl: util.api.host + util.api.categoryList,
+            itemsUrl: util.api.host + util.api.itemsList,
+            itemList: [],
+            categoryList: [],
+            currentIndex: 0
           }
       },
-      created: function() {
+      activated: function() {
+        this.getCategories(()=>{
+          if(this.categoryList.length > 0) {
+            this.getItemsInCategory(this.categoryList[0].classid);
+          }
+        });
+      },
+      methods: {
+        getCategories(cb) {
+          var postData = {
+            openid: window.info.openid,
+            token: window.info.token,
+            shopid: window.info.shopid
+          };
 
+          this.$http.post(this.categoryUrl, postData)
+          .then((res)=>{
+            var data = res.body;
+            if(data.code == 0) {
+              console.log(data.classlist)
+              this.categoryList = data.classlist;
+              cb && cb();
+            } else {
+              alert(data.msg);
+            }
+          });
+        },
+        updateItemInCategory(cat, index) {
+          this.currentIndex = index;
+          this.getItemsInCategory(cat);
+        },
+        getItemsInCategory(cat) {
+          var postData = {
+            openid: window.info.openid,
+            token: window.info.token,
+            shopid: window.info.shopid,
+            classid: cat
+          };
+          this.$http.post(this.itemsUrl, postData)
+          .then((res)=>{
+            var data = res.body;
+            console.log(data)
+            if(data.code == 0) {
+              this.itemList = data.prodlist;
+            } else {
+              alert(data.msg);
+            }
+          });
+        }
       }
     }
 </script>
 
 <style lang="less" scoped>
+    @import '../assets/less/common.less';
+    @import '../assets/less/toc-index.less';
     @import '../assets/less/tob-build.less';
+    .eps {
+      overflow: hidden;
+      display: block;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 </style>

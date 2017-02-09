@@ -63,8 +63,12 @@
                 </router-link>
             </div>
             <div class="weui-btn-area">
-                <a  @click.prevent="goNext" class="weui-btn weui-btn_primary" to="ProductIndex" href="javascript:" id="showTooltips">完成并添加下一步</a>
+                <a  @click.prevent="goNext" class="weui-btn weui-btn_primary" to="ProductIndex" href="javascript:" id="showTooltips">完成并继续添加</a>
             </div>
+            <div class="weui-btn-area">
+                <router-link class="weui-btn weui-btn_primary" to="BuildIndex" href="javascript:" id="showTooltips">返回店铺首页</router-link>
+            </div>
+
         </div>
     </div>
 </div>
@@ -89,13 +93,21 @@ import util from '../assets/js/util.js'
       created: function() {
         document.title = '添加商品';
       },
-      mounted() {
+      activated() {
         if(this.$route.params.categoryId) {
           this.category = this.$route.params.categoryId;
           this.categoryName  = this.$route.params.categoryName;
         }
       },
       methods: {
+        clearData() {
+          this.imgList = [];
+          this.name = '';
+          this.price = '';
+          this.category = '';
+          this.description = '';
+          this.categoryName = '请添加商品分类';
+        },
         checkForm() {
           var flag = util.checkForm([
           {
@@ -136,7 +148,10 @@ import util from '../assets/js/util.js'
           this.$http.post(this.url, postData)
           .then((res)=>{
             var data = res.body;
+            console.log(data)
             if(data.code == 0) {
+              alert('商品添加成功');
+              this.clearData();
               this.$router.push('BuildProduct');
             } else {
               alert(data.msg);

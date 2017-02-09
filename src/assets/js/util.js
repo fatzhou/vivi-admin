@@ -5,7 +5,10 @@ var api = {
   categoryList: '/api/shop/classquery',
   buildShop: '/api/shop/update',
   buildProduct: '/api/shop/dealprod',
-  addCategory: '/api/shop/dealclass'
+  addCategory: '/api/shop/dealclass',
+  itemsList: '/api/shop/prodlist',
+  shopInfo: '/api/shop/query',
+  shopUpdate: '/api/shop/update'
 }
 
 var validator = {
