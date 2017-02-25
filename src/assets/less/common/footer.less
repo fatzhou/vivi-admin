@@ -3,4 +3,31 @@ footer{
   position: fixed;
   bottom: 0;
   width: 100%;
+  height:53px;
+  .weui-tabbar{
+    background:none;height:100%;
+    .weui-tabbar__item{padding-top:0;}
+  }
+
+}
+/*footer*/
+.weui-bar__item_on{
+
+  .iconfont-dasan-28{
+    &:before{
+      content: "\e74b";
+    }
+  }
+  .iconfont-dasan-30{
+    &:before{
+      content: "\e732";
+    }
+  }
+}
+.weui-tabbar__item.weui-bar__item_on .weui-tabbar__icon, .weui-tabbar__item.weui-bar__item_on .weui-tabbar__icon>i, .weui-tabbar__item.weui-bar__item_on .weui-tabbar__label{
+  color:@color2;
+}
+.weui-tabbar__icon{
+  margin-bottom:5px;
+  font-size:22px;
 }

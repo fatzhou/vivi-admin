@@ -50,9 +50,14 @@ const routes = [
     component: require('./views/ShopIndex')
   },
   {
+    path: '/',
+    name: 'CheckShop',
+    component: require('./views/CheckShop')
+  },
+  {
     path: '*',
     redirect: {
-      name: 'MobileBind'
+      name: 'CheckShop'
     }
   }
 ];

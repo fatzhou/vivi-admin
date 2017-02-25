@@ -16,20 +16,6 @@
                     <input class="weui-input" type="number" v-model="smscode" placeholder="请输入邀请码">
                 </div>
             </div>
-
-            <div class="weui-cell">
-                <div class="weui-cell__hd"><label class="weui-label">openid</label></div>
-                <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" v-model="openid" placeholder="请输入openid">
-                </div>
-            </div>
-            <div class="weui-cell">
-                <div class="weui-cell__hd"><label class="weui-label">token</label></div>
-                <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" v-model="token" placeholder="请输入token">
-                </div>
-            </div>
-
         </div>
         <div class="weui-btn-area">
             <a href="javascript:;" @click="saveMobile" class="weui-btn weui-btn_primary"  id="showTooltips">确定</a>
@@ -51,8 +37,6 @@
             url: util.api.host + util.api.mobile,
             smscode: '',
             mobile: '',
-            openid: '',
-            token: ''
           }
       },
       created: function() {
@@ -70,22 +54,12 @@
           {
             name: '邀请码',
             data: this.smscode,
-          },
-          {
-            name: 'openid',
-            data: this.openid
-          },{
-            name: 'token',
-            data: this.token
           }];
 
           var flag = util.checkForm(check);
           if(!flag) {
             return false;
           }
-
-          window.info.openid = this.openid;
-          window.info.token = this.token;
 
           var postData = {
             openid: window.info.openid,
@@ -97,6 +71,7 @@
           this.$http.post(this.url, postData)
           .then((res)=>{
             var data = res.body;
+            console.log(data)
             if(data.code == 0) {
               window.info.shopid = data.shopid;
               window.info.mobile = this.mobile;

@@ -1,14 +1,15 @@
 var api = {
-  host: 'https://www.wxpuu.com',
-  mobile: '/api/shop/register',
-  fileApi: '/api/upload',
-  categoryList: '/api/shop/classquery',
-  buildShop: '/api/shop/update',
-  buildProduct: '/api/shop/dealprod',
-  addCategory: '/api/shop/dealclass',
-  itemsList: '/api/shop/prodlist',
-  shopInfo: '/api/shop/query',
-  shopUpdate: '/api/shop/update'
+    host: 'https://www.wxpuu.com',
+    mobile: '/api/shop/register',
+    fileApi: '/api/upload',
+    categoryList: '/api/shop/classquery',
+    buildShop: '/api/shop/update',
+    buildProduct: '/api/shop/dealprod',
+    addCategory: '/api/shop/dealclass',
+    itemsList: '/api/shop/prodlist',
+    shopInfo: '/api/shop/query',
+    shopUpdate: '/api/shop/update',
+    queryShop: '/api/shop/query',
 }
 
 var validator = {
@@ -23,24 +24,38 @@ var validator = {
 };
 
 function checkForm(data) {
-  var flag = data.every(function(item) {
-    if(!item.data) {
-      alert(item.name + '不能为空');
-      return false;
-    }
-    if(validator[item.type]) {
-      var tmpFlag = validator[item.type](item.data);
-      if(!tmpFlag) {
-        alert(item.name + '填写不符合规则');
-      }
-      return tmpFlag;
-    }
-    return true;
-  });
-  return flag;
+    var flag = data.every(function(item) {
+        if (!item.data) {
+            alert(item.name + '不能为空');
+            return false;
+        }
+        if (validator[item.type]) {
+            var tmpFlag = validator[item.type](item.data);
+            if (!tmpFlag) {
+                alert(item.name + '填写不符合规则');
+            }
+            return tmpFlag;
+        }
+        return true;
+    });
+    return flag;
 }
 
+function getUrlKey(name) {
+   var url = location.search; //获取url中"?"符后的字串
+   var theRequest = new Object();
+   if (url.indexOf("?") != -1) {
+      var str = url.substr(1),
+      strs = str.split("&");
+      for(var i = 0; i < strs.length; i ++) {
+         theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+      }
+   }
+   return theRequest;
+ }
+
 module.exports = {
-  api: api,
-  checkForm: checkForm
+    api: api,
+    checkForm: checkForm,
+    getUrlKey: getUrlKey
 }

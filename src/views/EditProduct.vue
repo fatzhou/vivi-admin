@@ -213,4 +213,7 @@
 
 <style lang="less" scoped>
     @import '../assets/less/tob-build.less';
+    .container {
+      background-color: #f5f5f5;
+    }
 </style>

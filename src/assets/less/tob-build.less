@@ -1,4 +1,5 @@
 @import "widgets/notic";
+
 @color1: #f4f4f4;
 @bgcolor1: rgba(255, 255, 255, 0.5);
 @color2: #f97a4d;
@@ -48,6 +49,9 @@ body {
       }
     }
     &.fenlei-wrap {
+      i{
+        color: @color2;margin-right:5px;font-size:14px;
+      }
       .weui-cells {
         margin-top: 0;
         &:first-child {
@@ -55,7 +59,10 @@ body {
             display: none;
           }
         }
-
+.weui-cell.del{
+  padding-top:0;padding-bottom:0;padding-right:0;
+  .weui-cell__ft{background:@color2;padding:10px 15px;color:#fff;}
+}
       }
       .weui-cells_checkbox .weui-check:checked + .weui-icon-checked:before {
         color: @color2;
@@ -73,21 +80,38 @@ body {
       .weui-panel__bd {
         padding-top: 30px;
       }
+      .add {
+        text-align: center;
+        width: 100%;
+        display: block;
+        padding-left:0;padding-right:0;
+        i {
+          color: @color2; font-size: 14px;margin-right:3px;
+        }
+        color: @color2;
+        font-size: 14px;
+      }
     }
   }
 }
+
 /*编辑小铺信息*/
-.edit-container{
-  .product{
-    .content{
-      .weui-cells{
-        margin-top:1.17647059em;
-        &:first-child{
-          margin-top:0;
+.edit-container {
+  .product {
+    .content {
+      .weui-cells {
+        margin-top: 1.17647059em;
+        &:first-child {
+          margin-top: 0;
         }
-        .weui-cell__bd{min-width:80px;}
-        .weui-cell__ft{
-          img{width:32px;height:32px;}
+        .weui-cell__bd {
+          min-width: 80px;
+        }
+        .weui-cell__ft {
+          img {
+            width: 32px;
+            height: 32px;
+          }
         }
       }
       .weui-cells__title + .weui-cells {
@@ -96,16 +120,22 @@ body {
     }
   }
 }
+
 /*bind 手机号*/
-.phone-container{
-  .notic{position: inherit;
-  & + .weui-cells{
-    margin-top:0;
-  }}
-  .weui-msg{
-    h2{color:@color2;margin-bottom:40px;}
-    .weui-icon-success{
-      color:@color2;
+.phone-container {
+  .notic {
+    position: inherit;
+    & + .weui-cells {
+      margin-top: 0;
+    }
+  }
+  .weui-msg {
+    h2 {
+      color: @color2;
+      margin-bottom: 40px;
+    }
+    .weui-icon-success {
+      color: @color2;
     }
   }
 }

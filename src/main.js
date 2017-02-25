@@ -19,17 +19,17 @@ window.info = {
   mobile: ''
 };
 
-// Vue.mixin({
-//   beforeMount: function () {
-//     document.getElementById('app').scrollTop = 0;
-//   },
-//   mounted: function() {
-//     if(!window.info.openid && location.hash.indexOf('MobileBind') == -1) {
-//       // location.reload();
-//       router.push('MobileBind');
-//     }
-//   }
-// })
+Vue.mixin({
+  beforeMount: function () {
+    document.getElementById('app').scrollTop = 0;
+  },
+  created: function() {
+    if(!window.info.openid && location.hash.indexOf('CheckShop') == -1) {
+      // location.reload();
+      router.push('CheckShop');
+    }
+  }
+})
 
 const app = new Vue({
   router

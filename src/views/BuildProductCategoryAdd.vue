@@ -55,7 +55,8 @@ import util from '../assets/js/util.js'
           .then((res)=>{
             var data = res.body;
             if(data.code == 0) {
-              this.$router.push('BuildProductCategory');
+              var name = this.$route.params.from || 'BuildProductCategory';
+              this.$router.push(name);
             } else {
               alert(data.msg);
             }

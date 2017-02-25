@@ -5,7 +5,7 @@
                <i class="weui-icon-info-circle"></i>
                <span>小铺已生成，请添加商品信息</span>
            </p>
-          <div class="content">
+          <div class="content wrap">
               <router-link href="javascript:;" class="no-add" to="BuildProduct">
                 <i class="ico-addprodcut"></i>
                 <span>添加商品</span>
@@ -23,6 +23,7 @@
                       <a href="javascript:void(0);" v-for="item,index in categoryList" @click="updateItemInCategory(item.classid, index)" class="weui-media-box weui-media-box_appmsg eps" :class="{'current': index==currentIndex}">
                           {{item.name}}
                       </a>
+                      <router-link href="#" class="add" :to="{name:'BuildProductCategoryAdd',params:{from:'BuildIndex'}}"> <i class="iconfont-dasan-18"></i>添加分类</router-link>
                   </div>
                   <div class="weui-panel__bd">
                       <div href="javascript:void(0);" v-for="item in itemList" class="weui-media-box weui-media-box_appmsg">
@@ -34,7 +35,7 @@
                           <div class="weui-media-box__bd">
                               <h4 class="weui-media-box__title">{{item.name}}</h4>
 
-                              <p class="weui-media-box__desc">{{item.desc}}</p>
+                              <p class="weui-media-box__desc">{{item.desc||'暂无商品描述'}}</p>
 
                               <div class="weui-media-box__info"><span>{{item.price}}元</span>
 
@@ -46,6 +47,7 @@
                               </div>
                           </div>
                       </div>
+                      <router-link href="#" class="add" :to="{name:'BuildProduct',params:{from:'BuildIndex'}}"> <i class="iconfont-dasan-18"></i>添加商品</router-link>
                   </div>
               </div>
           </div>
@@ -56,16 +58,12 @@
 
       <footer>
           <div class="weui-tabbar">
-              <router-link to="BuildIndex" href="javascript:;" class="weui-tabbar__item weui-bar__item_on">
-                  <img src="../assets/img//icon_tabbar.png" alt="" class="weui-tabbar__icon">
-
+              <router-link href="javascript:;" class="weui-tabbar__item weui-bar__item_on" to="ShopIndex">
+                  <i class="weui-tabbar__icon  iconfont-dasan-28"></i>
                   <p class="weui-tabbar__label">首页</p>
               </router-link>
-              <router-link to="ShopIndex" href="javascript:;" class="weui-tabbar__item">
-                      <span style="display: inline-block;position: relative;">
-                          <img src="../assets/img//icon_tabbar.png" alt="" class="weui-tabbar__icon">
-                      </span>
-
+              <router-link href="javascript:;" class="weui-tabbar__item" to="ShopIndex">
+                  <i class="weui-tabbar__icon  iconfont-dasan-30"></i>
                   <p class="weui-tabbar__label">小铺中心</p>
               </router-link>
           </div>

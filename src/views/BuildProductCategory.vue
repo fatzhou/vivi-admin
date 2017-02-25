@@ -5,13 +5,13 @@
            <div class="weui-cells">
                <router-link to="BuildProductCategoryAdd" class="weui-cell weui-cell_access" href="javascript:;">
                    <div class="weui-cell__bd">
-                       <p><i class="weui-icon-info-circle"></i><span>添加新分类</span></p>
+                       <p><i class="iconfont-dasan-18"></i><span>添加新分类</span></p>
                    </div>
                    <div class="weui-cell__ft">
                    </div>
                </router-link>
            </div>
-           <div class="weui-cells__title" v-if="categoryList.length>0">选择分类</div>
+           <div class="weui-cells__title" v-if="categoryList.length>0"><i class="iconfont-dasan-17"></i>选择分类</div>
            <div class="weui-cells weui-cells_checkbox">
                <label v-for="item,index in categoryList" @click="goBack(item.classid, item.name)"  class="weui-cell weui-check__label" >
                    <div class="weui-cell__bd">
