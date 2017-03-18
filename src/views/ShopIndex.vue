@@ -22,35 +22,10 @@
                     <div class="clear"></div>
 
                 </a>
-                <a href="javascript:;" class="weui-grid">
-                    <div class="data-cont">
-                        10034
-                    </div>
-                    <div class="data-hint">
-                        <div class="weui-grid__icon">
-                            <img src="../assets/img/icon-shouru.png" alt="">
-                        </div>
-                        <p class="weui-grid__label">收入</p></div>
-                    <div class="clear"></div>
-
-                </a>
-                <a href="javascript:;" class="weui-grid">
-                    <div class="data-cont">
-                        1002
-                    </div>
-                    <div class="data-hint">
-                        <div class="weui-grid__icon">
-                            <img src="../assets/img/icon-guanzhu.png" alt="">
-                        </div>
-                        <p class="weui-grid__label">关注</p></div>
-                    <div class="clear"></div>
-
-                </a>
-
                 <div class="clear"></div>
-                <div class="grids-tips ">
+                <div class="grids-tips " @click="queryOrderList">
                     <div class="grids-tips-cont">
-                        <p>你有3条订单信息，请查看</p>
+                        <p><i class="weui-icon-info-circle"></i> 你有未处理的订单信息，请查看</p>
                     </div>
                 </div>
             </div>
@@ -69,21 +44,15 @@
             </div>
             <div class="weui-grids">
                 <a href="javascript:;" class="weui-grid">
-                    <div class="weui-grid__icon">
-                        <img src="../assets/img/icon_tabbar.png" alt="">
-                    </div>
+                    <i class="iconfont-dasan-23"></i>
                     <p class="weui-grid__label">小铺装修</p>
                 </a>
                 <a href="javascript:;" class="weui-grid">
-                    <div class="weui-grid__icon">
-                        <img src="../assets/img/icon_tabbar.png" alt="">
-                    </div>
+                    <i class="iconfont-dasan-27"></i>
                     <p class="weui-grid__label">小铺预览</p>
                 </a>
                 <a href="javascript:;" class="weui-grid">
-                    <div class="weui-grid__icon">
-                        <img src="../assets/img/icon_tabbar.png" alt="">
-                    </div>
+                    <i class="iconfont-dasan-24"></i>
                     <p class="weui-grid__label">意见反馈</p>
                 </a>
             </div>
@@ -104,6 +73,7 @@
       data() {
           return {
             url: util.api.host + util.api.shopInfo,
+            queryOrder: util.api.host + util.api.queryOrder,
             dataTab: [
             {
               name: '今日数据'
@@ -134,6 +104,13 @@
         document.title = '微小铺';
       },
       activated() {
+        this.queryShopInfo();
+      },
+      methods: {
+        toggleDataView(index) {
+          this.currentTab = index;
+        },
+        queryShopInfo() {
           var postData = {
             openid: window.info.openid,
             token: window.info.token,
@@ -142,10 +119,10 @@
           this.$http.post(this.url, postData)
           .then((res)=>{
             var data = res.body;
-            console.log(data)
+            console.log(data,123)
             if(data.code == 0) {
               this.shopInfo = {
-                logo: data.logo,
+                logo: (data.logo||'').split('|')[0],
                 name: data.name,
                 mobile: data.mobile
               }
@@ -156,10 +133,9 @@
               alert(data.msg);
             }
           });
-      },
-      methods: {
-        toggleDataView(index) {
-          this.currentTab = index;
+        },
+        queryOrderList() {
+          this.$router.push('OrderList');
         }
       }
     }

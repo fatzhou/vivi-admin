@@ -17,13 +17,13 @@
           <div class="shop-wrap">
               <div class="shop-layer">
                   <div class="weui-panel__hd">
-                      <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg" :class="{'current': -1==currentIndex}">
+                      <div class="weui-media-box weui-media-box_appmsg" @click="updateItemInCategory('', -1)" :class="{'current': -1==currentIndex}">
                           全部分类
-                      </a>
-                      <a href="javascript:void(0);" v-for="item,index in categoryList" @click="updateItemInCategory(item.classid, index)" class="weui-media-box weui-media-box_appmsg eps" :class="{'current': index==currentIndex}">
-                          {{item.name}}
-                      </a>
-                      <router-link href="#" class="add" :to="{name:'BuildProductCategoryAdd',params:{from:'BuildIndex'}}"> <i class="iconfont-dasan-18"></i>添加分类</router-link>
+                      </div>
+                      <div v-for="item,index in categoryList" @click="updateItemInCategory(item.classid, index)" class="weui-media-box weui-media-box_appmsg eps" :class="{'current': index==currentIndex}">
+                          {{item.name}} <a href="javascript:;" @click="updageCategoryName(item.classid, item.name)" class="oper none" :class="{'block': index==currentIndex}"><i class="ico-edit"></i> </a>
+                      </div>
+                      <div class="add-wrap"><router-link href="#"  :to="{name:'BuildProductCategoryAdd',params:{from:'BuildIndex'}}" class="add">添加分类</router-link></div>
                   </div>
                   <div class="weui-panel__bd">
                       <div href="javascript:void(0);" v-for="item in itemList" class="weui-media-box weui-media-box_appmsg">
@@ -33,21 +33,24 @@
                                    alt="">
                           </div>
                           <div class="weui-media-box__bd">
-                              <h4 class="weui-media-box__title">{{item.name}}</h4>
+                              <h4 class="weui-media-box__title">
+                                {{item.name}}
+                                <a href="javascript:;" @click="updateItemInfo(item.prodid)" class="oper"><i class="ico-edit"></i> </a>
+                              </h4>
 
                               <p class="weui-media-box__desc">{{item.desc||'暂无商品描述'}}</p>
 
                               <div class="weui-media-box__info"><span>{{item.price}}元</span>
-
-                                  <p class="price-oper">
-                                    <a href="javascript:;" class="">
-                                      <i class="weui-icon-info-circle"></i>
-                                    </a>
-                                  </p>
+                                <p class="price-oper">
+                                  <a href="#"><i class="iconfont-dasan-11"></i> </a>
+                                  <span>12</span>
+                                  <a href="#" class=""><i class="iconfont-dasan-12"></i> </a>
+                                </p>
                               </div>
                           </div>
                       </div>
-                      <router-link href="#" class="add" :to="{name:'BuildProduct',params:{from:'BuildIndex'}}"> <i class="iconfont-dasan-18"></i>添加商品</router-link>
+
+                      <div class="add-wrap"><router-link href="#" :to="{name:'BuildProduct',params:{from:'BuildIndex'}}" class="add">添加商品</router-link></div>
                   </div>
               </div>
           </div>
@@ -87,11 +90,19 @@
       activated: function() {
         this.getCategories(()=>{
           if(this.categoryList.length > 0) {
-            this.getItemsInCategory(this.categoryList[0].classid);
+            this.getItemsInCategory(this.categoryList[this.currentIndex].classid);
           }
         });
       },
       methods: {
+        updateItemInfo(id) {
+          this.$router.push({
+            name: 'BuildProduct',
+            params: {
+              prodid: id
+            }
+          })
+        },
         getCategories(cb) {
           var postData = {
             openid: window.info.openid,
@@ -103,7 +114,7 @@
           .then((res)=>{
             var data = res.body;
             if(data.code == 0) {
-              console.log(data.classlist)
+              console.log(data.classlist, 'class list received~!')
               this.categoryList = data.classlist;
               cb && cb();
             } else {
@@ -115,13 +126,24 @@
           this.currentIndex = index;
           this.getItemsInCategory(cat);
         },
+        updageCategoryName(catId, name) {
+          this.$router.push({
+            name: 'BuildProductCategoryAdd',
+            params: {
+              id: catId,
+              name: name
+            }
+          })
+        },
         getItemsInCategory(cat) {
           var postData = {
             openid: window.info.openid,
             token: window.info.token,
             shopid: window.info.shopid,
-            classid: cat
           };
+          if(cat) {
+            postData.classid = cat;
+          }
           this.$http.post(this.itemsUrl, postData)
           .then((res)=>{
             var data = res.body;
@@ -146,5 +168,11 @@
       display: block;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+    .none {
+      display: none;
+    }
+    .block {
+      display: block;
     }
 </style>

@@ -10,6 +10,7 @@ var api = {
     shopInfo: '/api/shop/query',
     shopUpdate: '/api/shop/update',
     queryShop: '/api/shop/query',
+    queryOrder: '/api/shop/orderquery'
 }
 
 var validator = {

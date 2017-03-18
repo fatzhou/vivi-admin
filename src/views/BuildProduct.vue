@@ -24,7 +24,7 @@
                                 <ul class="weui-uploader__files" id="uploaderFiles">
                                     <li class="weui-uploader__file" v-for="item in imgList" :style="{'background-image':'url('+item+')'}"></li>
                                 </ul>
-                                <div class="weui-uploader__input-box" v-if="imgList.length<5">
+                                <div class="weui-uploader__input-box" v-show="imgList.length<5">
                                     <input id="uploaderInput" @change="uploadFileChange" class="weui-uploader__input" type="file" accept="image/*" multiple="">
                                 </div>
                             </div>
@@ -97,6 +97,8 @@ import util from '../assets/js/util.js'
         if(this.$route.params.categoryId) {
           this.category = this.$route.params.categoryId;
           this.categoryName  = this.$route.params.categoryName;
+        } else if(this.$route.params.prodid) {
+
         }
       },
       methods: {
@@ -159,6 +161,7 @@ import util from '../assets/js/util.js'
           });
         },
         uploadFileChange(e) {
+          console.log(arguments)
           var files = e.target.files;
           for (var i = 0, f; f = files[i]; i++) {
             this.uploadFile(f);

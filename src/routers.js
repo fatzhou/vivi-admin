@@ -50,6 +50,11 @@ const routes = [
     component: require('./views/ShopIndex')
   },
   {
+    path: '/OrderList',
+    name: 'OrderList',
+    component: require('./views/OrderList')
+  },
+  {
     path: '/',
     name: 'CheckShop',
     component: require('./views/CheckShop')

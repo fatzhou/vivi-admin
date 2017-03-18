@@ -10,7 +10,6 @@ body {
 .build {
   .wrap {
     position: relative;
-    height: 100%;
     .content {
       position: relative;
       height: 100%;
@@ -49,8 +48,10 @@ body {
       }
     }
     &.fenlei-wrap {
-      i{
-        color: @color2;margin-right:5px;font-size:14px;
+      i {
+        color: @color2;
+        margin-right: 5px;
+        font-size: 14px;
       }
       .weui-cells {
         margin-top: 0;
@@ -59,10 +60,16 @@ body {
             display: none;
           }
         }
-.weui-cell.del{
-  padding-top:0;padding-bottom:0;padding-right:0;
-  .weui-cell__ft{background:@color2;padding:10px 15px;color:#fff;}
-}
+        .weui-cell.del {
+          padding-top: 0;
+          padding-bottom: 0;
+          padding-right: 0;
+          .weui-cell__ft {
+            background: @color2;
+            padding: 10px 15px;
+            color: #fff;
+          }
+        }
       }
       .weui-cells_checkbox .weui-check:checked + .weui-icon-checked:before {
         color: @color2;
@@ -74,22 +81,58 @@ body {
       }
     }
     .shop-wrap {
+      .oper {
+        position: absolute;
+        right: 0;
+        top: 5px;
+        background: #fb9873;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        padding: 2px 5px;
+        .ico-edit {
+          background: url("../img/ico-edit.png") no-repeat 0 0;
+          display: block;
+          width: 13px;
+          height: 13px;
+          -webkit-background-size: contain;
+          background-size: contain;
+        }
+      }
       .weui-panel__hd {
         top: 30px;
+        .weui-media-box{
+          .oper{
+            top:14px;
+          }
+        }
       }
       .weui-panel__bd {
         padding-top: 30px;
-      }
-      .add {
-        text-align: center;
-        width: 100%;
-        display: block;
-        padding-left:0;padding-right:0;
-        i {
-          color: @color2; font-size: 14px;margin-right:3px;
+        .weui-media-box {
+          padding-right: 0;
+          .weui-media-box__info {
+            padding-right: 15px;
+          }
         }
-        color: @color2;
-        font-size: 14px;
+      }
+      .add-wrap {
+        text-align: center;
+        .add {
+          text-align: center;
+          padding: 5px 15px;
+          border-radius: 20px;
+          background: @color2;
+          color: #fff;
+          font-size: 14px;
+          line-height: 20px;
+          height: auto;
+          display: inline-block;
+        }
+      }
+      .shop-layer {
+        .weui-media-box__title {
+          position: relative;
+        }
       }
     }
   }

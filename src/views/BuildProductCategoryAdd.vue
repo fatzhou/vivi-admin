@@ -26,11 +26,16 @@ import util from '../assets/js/util.js'
       data() {
           return {
             url: util.api.host + util.api.addCategory,
-            categoryName: ''
+            categoryName: '',
+            categoryId: ''
           }
       },
       created: function() {
         document.title = '创建商品分类';
+      },
+      activated: function() {
+        this.categoryName = this.$route.params.name || '';
+        this.categoryId = this.$route.params.id || '';
       },
       methods: {
         checkForm() {
@@ -49,14 +54,13 @@ import util from '../assets/js/util.js'
             token: window.info.token,
             shopid: window.info.shopid,
             name: this.categoryName,
-            classid: ''
+            classid: this.categoryId
           };
           this.$http.post(this.url, postData)
           .then((res)=>{
             var data = res.body;
             if(data.code == 0) {
-              var name = this.$route.params.from || 'BuildProductCategory';
-              this.$router.push(name);
+              this.$router.go(-1);
             } else {
               alert(data.msg);
             }
