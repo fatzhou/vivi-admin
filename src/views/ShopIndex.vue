@@ -43,14 +43,14 @@
                 </router-link>
             </div>
             <div class="weui-grids">
-                <a href="javascript:;" class="weui-grid">
+                <router-link to="ShopDecorate" href="javascript:;" class="weui-grid">
                     <i class="iconfont-dasan-23"></i>
                     <p class="weui-grid__label">小铺装修</p>
-                </a>
-                <a href="javascript:;" class="weui-grid">
+                </router-link>
+                <router-link to="BuildIndex" href="javascript:;" class="weui-grid">
                     <i class="iconfont-dasan-27"></i>
                     <p class="weui-grid__label">小铺预览</p>
-                </a>
+                </router-link>
                 <a href="javascript:;" class="weui-grid">
                     <i class="iconfont-dasan-24"></i>
                     <p class="weui-grid__label">意见反馈</p>

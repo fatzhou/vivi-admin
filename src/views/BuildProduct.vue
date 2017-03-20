@@ -63,11 +63,9 @@
                 </router-link>
             </div>
             <div class="weui-btn-area">
-                <a  @click.prevent="goNext" class="weui-btn weui-btn_primary" to="ProductIndex" href="javascript:" id="showTooltips">完成并继续添加</a>
+                <a  @click.prevent="goNext" class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips">{{buttonName}}</a>
             </div>
-            <div class="weui-btn-area">
-                <router-link class="weui-btn weui-btn_primary" to="BuildIndex" href="javascript:" id="showTooltips">返回店铺首页</router-link>
-            </div>
+
 
         </div>
     </div>
@@ -87,7 +85,8 @@ import util from '../assets/js/util.js'
             name: '',
             price: '',
             category: '',
-            categoryName: '请添加商品分类'
+            categoryName: '请选择商品分类',
+            buttonName: '完成并继续添加'
           }
       },
       created: function() {
@@ -95,13 +94,29 @@ import util from '../assets/js/util.js'
       },
       activated() {
         if(this.$route.params.categoryId) {
+          this.clearData();
           this.category = this.$route.params.categoryId;
           this.categoryName  = this.$route.params.categoryName;
-        } else if(this.$route.params.prodid) {
-
+          console.log(this.$route.params)
+        } else if(this.$route.params.prodinfo) {
+          this.buttonName = '保存并返回';
+          //获取并填充商品信息
+          console.log(this.$route.params.prodinfo.image);
+          var prodinfo = this.$route.params.prodinfo;
+          this.name = prodinfo.name;
+          this.description = prodinfo.descr;
+          this.price = prodinfo.price;
+          this.category = prodinfo.classid;
+          this.prodid = prodinfo.prodid;
+          this.imgList = [].concat(prodinfo.image.split('|'));
+          this.categoryName = this.$route.params.categoryName || '请添加商品分类';
+          console.log(this.imgList)
         }
       },
       methods: {
+        goBack() {
+          this.$router.go(-1);
+        },
         clearData() {
           this.imgList = [];
           this.name = '';
@@ -147,6 +162,7 @@ import util from '../assets/js/util.js'
             image: this.imgList.join('|'),
             status: 0
           };
+          this.prodid && (postData.prodid = this.prodid);
           this.$http.post(this.url, postData)
           .then((res)=>{
             var data = res.body;
@@ -154,7 +170,8 @@ import util from '../assets/js/util.js'
             if(data.code == 0) {
               alert('商品添加成功');
               this.clearData();
-              this.$router.push('BuildProduct');
+              this.$router.push('BuildIndex');
+              // this.goBack();
             } else {
               alert(data.msg);
             }

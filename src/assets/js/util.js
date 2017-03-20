@@ -10,8 +10,10 @@ var api = {
     shopInfo: '/api/shop/query',
     shopUpdate: '/api/shop/update',
     queryShop: '/api/shop/query',
-    queryOrder: '/api/shop/orderquery'
-}
+    queryOrder: '/api/shop/orderquery',
+    userInfo: '/api/mp/getuserinfo',
+    dealOrder: '/api/shop/orderdeal'
+};
 
 var validator = {
     email: function(str) {

@@ -1,51 +1,26 @@
 <template>
   <div class="container dingdan-wrap">
     <div class="wrap">
-        <div class="weui-form-preview">
+        <div v-for="item in orderList" class="weui-form-preview">
             <div class="weui-form-preview__hd">
                 <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">2017年2月3日 13:34:23</label>
+                    <label class="weui-form-preview__label">{{item.time}}</label>
                 </div>
             </div>
             <div class="weui-form-preview__bd">
-                <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">老北京鸡肉卷</label>
-                    <span class="weui-form-preview__value">45元<small>x2</small></span>
-                </div>
-                <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">老北京鸡肉卷</label>
-                    <span class="weui-form-preview__value">45元<small>x2</small></span>
+                <div v-for="it in item.detailJson" class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">{{ite.name}}</label>
+                    <span class="weui-form-preview__value">{{it.price}}元<small>x{{it.count}}</small></span>
                 </div>
                 <div class="weui-form-preview__item total-price">
                     <label class="weui-form-preview__label"></label>
-                    <span class="weui-form-preview__value">商品总额<span>180元</span></span>
+                    <span class="weui-form-preview__value">商品总额<span>{{item.totalprice}}元</span></span>
                 </div>
             </div>
-            <div class="weui-form-preview__ft">
+            <div v-if="item.status !== 3" @click="dealOrder(item.orderno)" class="weui-form-preview__ft">
                 <a class="weui-btn weui-btn_primary " href="javascript:" id="">处理</a>
             </div>
-        </div>
-        <div class="weui-form-preview">
-            <div class="weui-form-preview__hd">
-                <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">2017年2月3日 13:34:23</label>
-                </div>
-            </div>
-            <div class="weui-form-preview__bd">
-                <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">老北京鸡肉卷</label>
-                    <span class="weui-form-preview__value">45元<small>x2</small></span>
-                </div>
-                <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">老北京鸡肉卷</label>
-                    <span class="weui-form-preview__value">45元<small>x2</small></span>
-                </div>
-                <div class="weui-form-preview__item total-price">
-                    <label class="weui-form-preview__label"></label>
-                    <span class="weui-form-preview__value">商品总额<span>180元</span></span>
-                </div>
-            </div>
-            <div class="weui-form-preview__ft">
+            <div v-else class="weui-form-preview__ft">
                 <a class="weui-btn weui-btn_primary weui-btn_disabled" href="javascript:" id="">已处理</a>
             </div>
         </div>
@@ -67,8 +42,10 @@
       data() {
           return {
             url: util.api.host + util.api.queryOrder,
+            dealUrl: util.api.host + util.api.dealOrder,
             pageno: 1,
-            pagesize: 10
+            pagesize: 10,
+            orderList: []
           }
       },
       mounted: function() {
@@ -78,6 +55,27 @@
         this.queryOrderInfo();
       },
       methods: {
+        dealOrder(orderno) {
+          var postData = {
+            openid: window.info.openid,
+            token: window.info.token,
+            shopid: window.info.shopid,
+            orderno: orderno
+          };
+
+          this.$http.post(this.dealUrl, postData)
+          .then((res)=>{
+            var data = res.body;
+            if(data.code == 0) {
+              var dealItem = this.orderList.filter((item)=>{
+                return item.orderno === orderno;
+              });
+              dealItem.status = 3;
+            } else {
+              alert(data.msg);
+            }
+          });
+        },
         queryOrderInfo() {
           var postData = {
             openid: window.info.openid,
@@ -90,9 +88,13 @@
           this.$http.post(this.url, postData)
           .then((res)=>{
             var data = res.body;
-            console.log(data,123)
-            if(data.code == 0) {
 
+            if(data.code == 0) {
+              var orderList = data.orderlist;
+              orderList.forEach((item)=>{
+                item.detailJson = JSON.parse(item.detail);
+              })
+              this.orderList = orderList;
             } else {
               alert(data.msg);
             }

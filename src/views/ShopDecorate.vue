@@ -21,8 +21,9 @@
                           全部分类
                       </div>
                       <div v-for="item,index in categoryList" @click="updateItemInCategory(item.classid, index)" class="weui-media-box weui-media-box_appmsg eps" :class="{'current': index==currentIndex}">
-                          {{item.name}}
+                          {{item.name}} <a href="javascript:;" @click="updageCategoryName(item.classid, item.name)" class="oper none" :class="{'block': index==currentIndex}"><i class="ico-edit"></i> </a>
                       </div>
+                      <div class="add-wrap"><router-link href="#"  :to="{name:'BuildProductCategoryAdd',params:{from:'BuildIndex'}}" class="add">添加分类</router-link></div>
                   </div>
                   <div class="weui-panel__bd">
                       <div href="javascript:void(0);" v-for="item in itemList" class="weui-media-box weui-media-box_appmsg">
@@ -34,6 +35,7 @@
                           <div class="weui-media-box__bd">
                               <h4 class="weui-media-box__title">
                                 {{item.name}}
+                                <a href="javascript:;" @click="updateItemInfo(item)" class="oper"><i class="ico-edit"></i> </a>
                               </h4>
 
                               <p class="weui-media-box__desc">{{item.desc||'暂无商品描述'}}</p>
@@ -47,12 +49,15 @@
                               </div>
                           </div>
                       </div>
+
+                      <div class="add-wrap"><router-link href="#" :to="{name:'BuildProduct',params:{from:'BuildIndex', categoryName: this.categoryName, categoryId: this.categoryId}}" class="add">添加商品</router-link></div>
                   </div>
               </div>
           </div>
           <p class="notic">
-              <i class="weui-icon-info-circle"></i><span>当前页面为你客户看到的效果。</span>
+              <i class="ico-notic"></i><span>当前页面为你客户看到的效果。</span><a href="#" class="oper"><i class="iconfont-dasan-9"></i> </a>
           </p>
+
       </div>
 
       <footer>
