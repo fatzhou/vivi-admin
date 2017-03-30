@@ -24,7 +24,7 @@ Vue.mixin({
     document.getElementById('app').scrollTop = 0;
   },
   created: function() {
-    if(!window.info.openid && location.hash.indexOf('CheckShop') == -1) {
+    if(!window.info.openid && location.hash.indexOf('CheckShop') == -1 && location.hash.indexOf('ToDevelop') == -1) {
       // location.reload();
       router.push('CheckShop');
     }

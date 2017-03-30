@@ -57,7 +57,6 @@
           <p class="notic">
               <i class="ico-notic"></i><span>当前页面为你客户看到的效果。</span><a href="#" class="oper"><i class="iconfont-dasan-9"></i> </a>
           </p>
-
       </div>
 
       <footer>
@@ -114,6 +113,7 @@
       },
       methods: {
         queryCategoryName(classid) {
+          console.log(classid, this.categoryList)
           if(this.categoryName) {
             return this.categoryName;
           }

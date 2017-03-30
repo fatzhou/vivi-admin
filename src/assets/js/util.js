@@ -12,7 +12,8 @@ var api = {
     queryShop: '/api/shop/query',
     queryOrder: '/api/shop/orderquery',
     userInfo: '/api/mp/getuserinfo',
-    dealOrder: '/api/shop/orderdeal'
+    dealOrder: '/api/shop/orderdeal',
+    userInfo: '/api/mp/getuserinfo'
 };
 
 var validator = {
@@ -51,7 +52,7 @@ function getUrlKey(name) {
       var str = url.substr(1),
       strs = str.split("&");
       for(var i = 0; i < strs.length; i ++) {
-         theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+         theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1].replace(/\//g,''));
       }
    }
    return theRequest;

@@ -6,7 +6,7 @@
            <div class="weui-cells">
                <div class="weui-cell">
                    <div class="weui-cell__bd">
-                       <input class="weui-input" v-model="itemValue" type="text" placeholder="请输入分类名称">
+                       <input class="weui-input" v-model="itemValue" type="text" :placeholder="'请输入'+itemName">
                    </div>
                </div>
            </div>
@@ -40,7 +40,7 @@
                 title: '店铺描述',
                 value: value
             },
-            desc: {
+            addr: {
                 title: '店铺地址',
                 value: value
             },
@@ -49,8 +49,8 @@
                 value: value
             },
         };
-        this.itemName = list[name].title;
-        this.itemValue = list[name].value;
+        this.itemName = list[name].title || '';
+        this.itemValue = list[name].value.replace(/\$/g,'');
         console.log(this.itemName, this.itemValue,123)
       },
       methods: {

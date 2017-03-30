@@ -10,6 +10,15 @@
             </div>
         </div>
         <div class="weui-cells weui-cells_form">
+            <div class="weui-gallery" @click="hideMask" id="gallery" :style="{display:ifMaskDisplay, opacity: 1}">
+                <span class="weui-gallery__img" id="galleryImg" :style="{'background-image':'url('+logo+')'}"></span>
+                <div class="weui-gallery__opr">
+                    <a href="javascript:" class="weui-gallery__del">
+                        <i class="weui-icon-delete weui-icon_gallery-delete" @click="deleteLogo"></i>
+                    </a>
+                </div>
+            </div>
+
             <div class="weui-cell">
                 <div class="weui-cell__bd">
                     <div class="weui-uploader">
@@ -18,7 +27,7 @@
                         </div>
                         <div class="weui-uploader__bd">
                             <ul class="weui-uploader__files" id="uploaderFiles" v-if="logo.length>0">
-                                <li class="weui-uploader__file" :style="{'background-image':'url('+logo+')'}"></li>
+                                <li class="weui-uploader__file" @click="showMask" :style="{'background-image':'url('+logo+')'}"></li>
                             </ul>
                             <div class="weui-uploader__input-box">
                                 <input id="uploaderInput" class="weui-uploader__input" @change="uploadFileChange" type="file" accept="image/*" multiple="">
@@ -46,13 +55,23 @@ import util from '../assets/js/util.js'
             url: util.api.host + util.api.buildShop,
             shopName: '',
             fileApi: util.api.host + util.api.fileApi,
-            logo: ''
+            logo: '',
+            ifMaskDisplay: 'none'
           }
       },
       created: function() {
         document.title = '创建小铺';
       },
       methods: {
+        deleteLogo() {
+          this.logo = '';
+        },
+        hideMask() {
+          this.ifMaskDisplay = 'none';
+        },
+        showMask() {
+          this.ifMaskDisplay = 'block';
+        },
         uploadFileChange(e) {
           var files = e.target.files;
           for (var i = 0, f; f = files[i]; i++) {

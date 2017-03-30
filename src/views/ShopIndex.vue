@@ -12,7 +12,7 @@
             <div class="weui-grids">
                 <a href="javascript:;" class="weui-grid">
                     <div class="data-cont">
-                        100
+                        {{orderCount}}
                     </div>
                     <div class="data-hint">
                         <div class="weui-grid__icon">
@@ -23,7 +23,7 @@
 
                 </a>
                 <div class="clear"></div>
-                <div class="grids-tips " @click="queryOrderList">
+                <div class="grids-tips " v-if="orderCount > 0" @click="queryOrderList">
                     <div class="grids-tips-cont">
                         <p><i class="weui-icon-info-circle"></i> 你有未处理的订单信息，请查看</p>
                     </div>
@@ -83,7 +83,8 @@
             }],
             currentTab: 0,
             shopInfo: {},
-
+            orderCount: 0,
+            orderList: []
           }
       },
       computed: {
@@ -105,10 +106,31 @@
       },
       activated() {
         this.queryShopInfo();
+        this.queryShopOrders();
       },
       methods: {
         toggleDataView(index) {
           this.currentTab = index;
+        },
+        queryShopOrders() {
+          var postData = {
+            openid: window.info.openid,
+            token: window.info.token,
+            shopid: window.info.shopid,
+            pageno: this.pageno,
+            pagesize: this.pagesize
+          };
+
+          this.$http.post(this.queryOrder, postData)
+          .then((res)=>{
+            var data = res.body;
+            if(data.code == 0) {
+              this.orderList = data.orderList;
+              this.orderCount = data.count;
+            } else {
+              alert(data.msg);
+            }
+          });
         },
         queryShopInfo() {
           var postData = {
@@ -135,7 +157,12 @@
           });
         },
         queryOrderList() {
-          this.$router.push('OrderList');
+          this.$router.push({
+            name: 'OrderList',
+            params: {
+              orderList: this.orderList
+            }
+          });
         }
       }
     }

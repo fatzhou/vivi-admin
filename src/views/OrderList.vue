@@ -52,7 +52,12 @@
         document.title = '订单处理';
       },
       activated() {
-        this.queryOrderInfo();
+        // this.queryOrderInfo();
+        var orderList = this.$router.params.orderList;
+        orderList.forEach((item)=>{
+          item.detailJson = JSON.parse(item.detail);
+        })
+        this.orderList = orderList;
       },
       methods: {
         dealOrder(orderno) {

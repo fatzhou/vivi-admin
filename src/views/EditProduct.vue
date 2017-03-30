@@ -3,7 +3,15 @@
     <div class="wrap product">
         <div class="content">
             <!--小铺照片-->
-            <div class="weui-cells weui-cells_form">
+              <div class="weui-cells weui-cells_form">
+               <div class="weui-gallery" @click="hideMask" id="gallery" :style="{display:ifMaskDisplay, opacity: 1}">
+                    <span class="weui-gallery__img" id="galleryImg" :style="{'background-image':'url('+shopInfo.logoList[currentLogoIndex]+')'}"></span>
+                    <div class="weui-gallery__opr">
+                        <a href="javascript:" class="weui-gallery__del">
+                            <i class="weui-icon-delete weui-icon_gallery-delete" @click="deleteLogo"></i>
+                        </a>
+                    </div>
+                </div>
                 <div class="weui-cell">
                     <div class="weui-cell__bd">
                         <div class="weui-uploader">
@@ -13,7 +21,7 @@
                             </div>
                             <div class="weui-uploader__bd">
                                 <ul class="weui-uploader__files" id="uploaderFiles">
-                                    <li class="weui-uploader__file" v-for="logo in shopInfo.logoList" :style="{'background-image':'url('+logo+')'}">></li>
+                                    <li class="weui-uploader__file" @click="showMask(index)" v-for="logo,index in shopInfo.logoList" :style="{'background-image':'url('+logo+')'}"></li>
                                 </ul>
                                 <div class="weui-uploader__input-box">
                                     <input id="uploaderInput" @change="uploadFileChange" class="weui-uploader__input" type="file" accept="image/*" multiple="">
@@ -25,7 +33,7 @@
             </div>
             <div class="weui-cells">
                 <!--小铺名称-->
-                <router-link class="weui-cell weui-cell_access" href="javascript:;" :to="{path:'EditProductItem/name/'+shopInfo.name}">
+                <router-link class="weui-cell weui-cell_access" href="javascript:;" :to="{path:'EditProductItem/name/'+(shopInfo.name||'$')}">
                     <div class="weui-cell__bd">
                         <p>小铺名称</p>
                     </div>
@@ -33,7 +41,7 @@
                         {{shopInfo.name||'去填写'}}
                     </div>
                 </router-link>
-                <a class="weui-cell weui-cell_access" :to="{path:'EditProductItem/desc/'+(shopInfo.desc||'店铺描述')}" href="javascript:;">
+                <a class="weui-cell weui-cell_access"  :to="{path:'EditProductItem/desc/'+(shopInfo.desc||'$')}" href="javascript:;">
                     <div class="weui-cell__bd">
                         <p>小铺介绍</p>
                     </div>
@@ -52,7 +60,7 @@
             </div>
             <div class="weui-cells">
                 <!--小铺名称-->
-                <a class="weui-cell weui-cell_access" :to="{path:'EditProductItem/addr/'+(shopInfo.desc||'店铺地址')}" href="javascript:;">
+                <a class="weui-cell weui-cell_access"  :to="{path:'EditProductItem/addr/'+(shopInfo.addr||'$')}" href="javascript:;">
                     <div class="weui-cell__bd">
                         <p>小铺地址</p>
                     </div>
@@ -60,7 +68,7 @@
                         {{shopInfo.addr||'去填写'}}
                     </div>
                 </a>
-                <router-link :to="{path:'EditProductItem/mobile/'+(shopInfo.mobile||'')}" class="weui-cell weui-cell_access" href="javascript:;">
+                <router-link  :to="{path:'EditProductItem/mobile/'+(shopInfo.mobile||'$')}" class="weui-cell weui-cell_access" href="javascript:;">
                     <div class="weui-cell__bd">
                         <p>联系电话</p>
                     </div>
@@ -108,8 +116,15 @@
             updateUrl: util.api.host + util.api.shopUpdate,
             shopInfo: {
               logo: '',
-              logoList: []
-            }
+              logoList: [],
+              name: '',
+              mobile: '',
+              address: ' ',
+              desc: '',
+              mobile: ''
+            },
+            ifMaskDisplay: 'none',
+            currentLogoIndex: -1
           }
       },
       computed: {
@@ -161,10 +176,20 @@
         console.log(params)
         if(params.key) {
           this.shopInfo[params.key] = params.value;
-          console.log(this.shopInfo.name,this.shopInfo[params.key]),params.key, params.value
+          console.log(params.key, params.value, this.shopInfo[params.key])
         }
       },
       methods: {
+        hideMask() {
+          this.ifMaskDisplay = 'none';
+        },
+        showMask(index) {
+          this.currentLogoIndex = index;
+          this.ifMaskDisplay = 'block';
+        },
+        deleteLogo() {
+          this.shopInfo.logoList.splice(this.currentLogoIndex, 1);
+        },
         uploadFileChange(e) {
           var files = e.target.files;
           for (var i = 0, f; f = files[i]; i++) {
@@ -202,6 +227,7 @@
             var data = res.body;
             if(data.code == 0) {
               alert('保存店铺信息成功');
+              this.$router.push('ShopIndex');
             } else {
               alert(data.msg);
             }

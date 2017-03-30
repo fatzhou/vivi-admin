@@ -13,6 +13,14 @@
             </div>
             <!--添加图片-->
             <div class="weui-cells weui-cells_form">
+              <div class="weui-gallery" @click="hideMask" id="gallery" :style="{display:ifMaskDisplay, opacity: 1}">
+                  <span class="weui-gallery__img" id="galleryImg" :style="{'background-image':'url('+logo+')'}"></span>
+                  <div class="weui-gallery__opr">
+                      <a href="javascript:" class="weui-gallery__del">
+                          <i class="weui-icon-delete weui-icon_gallery-delete" @click="deleteLogo"></i>
+                      </a>
+                  </div>
+              </div>
                 <div class="weui-cell">
                     <div class="weui-cell__bd">
                         <div class="weui-uploader">
@@ -22,7 +30,7 @@
                             </div>
                             <div class="weui-uploader__bd">
                                 <ul class="weui-uploader__files" id="uploaderFiles">
-                                    <li class="weui-uploader__file" v-for="item in imgList" :style="{'background-image':'url('+item+')'}"></li>
+                                    <li class="weui-uploader__file" v-for="item,index in imgList" :style="{'background-image':'url('+item+')'}" @click="showMask(index)"></li>
                                 </ul>
                                 <div class="weui-uploader__input-box" v-show="imgList.length<5">
                                     <input id="uploaderInput" @change="uploadFileChange" class="weui-uploader__input" type="file" accept="image/*" multiple="">
@@ -86,7 +94,10 @@ import util from '../assets/js/util.js'
             price: '',
             category: '',
             categoryName: '请选择商品分类',
-            buttonName: '完成并继续添加'
+            buttonName: '保存商品',
+            ifMaskDisplay: 'none',
+            logo: '',
+            currentSelectLogoIndex: -1
           }
       },
       created: function() {
@@ -114,8 +125,21 @@ import util from '../assets/js/util.js'
         }
       },
       methods: {
+        hideMask() {
+          this.ifMaskDisplay = 'none';
+        },
+        showMask(i) {
+          this.logo = this.imgList[i];
+          this.currentSelectLogoIndex = i;
+          this.ifMaskDisplay = 'block';
+        },
+        deleteLogo() {
+          if(this.currentSelectLogoIndex != -1) {
+            this.imgList.splice(this.currentSelectLogoIndex, 1);
+          }
+        },
         goBack() {
-          this.$router.go(-1);
+          this.$router.push('ShopDecorate');
         },
         clearData() {
           this.imgList = [];
@@ -170,7 +194,7 @@ import util from '../assets/js/util.js'
             if(data.code == 0) {
               alert('商品添加成功');
               this.clearData();
-              this.$router.push('BuildIndex');
+              this.$router.push('ShopDecorate');
               // this.goBack();
             } else {
               alert(data.msg);
