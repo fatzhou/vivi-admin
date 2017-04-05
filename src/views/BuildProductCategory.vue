@@ -46,6 +46,9 @@ import util from '../assets/js/util.js'
             deleteCategoryFlag: [],
           }
       },
+       mounted: function() {
+        document.title = '选择商品分类';//by:yoyo
+      },
       activated: function() {
           var postData = {
             openid: window.info.openid,

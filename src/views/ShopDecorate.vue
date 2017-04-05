@@ -87,6 +87,9 @@
             currentIndex: -1,
           }
       },
+       mounted: function() {
+        document.title = '添加商品';//by:yoyo
+      },
       activated: function() {
         this.getCategories(()=>{
           if(this.categoryList.length > 0) {

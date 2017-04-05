@@ -83,6 +83,9 @@
             currentIndex: -1,
           }
       },
+      mounted: function() {
+        document.title = '预览小铺';//by:yoyo
+      },
       activated: function() {
         this.getCategories(()=>{
           if(this.categoryList.length > 0) {

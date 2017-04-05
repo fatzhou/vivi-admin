@@ -27,6 +27,9 @@
             itemValue: '',
           }
       },
+      mounted: function() {
+        document.title = '编辑商品';//by:yoyo
+      },
       activated: function() {
         var name = this.$route.params.item,
             value = this.$route.params.value;
