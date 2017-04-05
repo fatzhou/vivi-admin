@@ -16,6 +16,7 @@
     },
     created() {
       this.queryShop();
+      document.title = '确认商品';//by:yoyo
     },
     methods: {
       queryShop() {

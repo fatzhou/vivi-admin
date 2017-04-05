@@ -19,6 +19,9 @@
 
           }
       },
+       mounted: function() {
+        document.title = '敬请期待';
+      }
     }
 </script>
 
