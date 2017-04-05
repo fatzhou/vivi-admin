@@ -93,7 +93,7 @@
           this.preview = false;
         },
         goNext() {
-          this.$router.push('BuildIndex');
+          this.$router.push('ShopDecorate');
         }
       }
     }

@@ -23,7 +23,7 @@
                       <div v-for="item,index in categoryList" @click="updateItemInCategory(item.classid, index)" class="weui-media-box weui-media-box_appmsg eps" :class="{'current': index==currentIndex}">
                           {{item.name}} <a href="javascript:;" @click="updageCategoryName(item.classid, item.name)" class="oper none" :class="{'block': index==currentIndex}"><i class="ico-edit"></i> </a>
                       </div>
-                      <div class="add-wrap"><router-link href="#"  :to="{name:'BuildProductCategoryAdd',params:{from:'BuildIndex'}}" class="add">添加分类</router-link></div>
+                      <div class="add-wrap"><router-link href="#"  :to="{name:'BuildProductCategoryAdd',params:{from:'ShopDecorate'}}" class="add">添加分类</router-link></div>
                   </div>
                   <div class="weui-panel__bd">
                       <div href="javascript:void(0);" v-for="item in itemList" class="weui-media-box weui-media-box_appmsg">
@@ -50,7 +50,7 @@
                           </div>
                       </div>
 
-                      <div class="add-wrap"><router-link href="#" :to="{name:'BuildProduct',params:{from:'BuildIndex', categoryName: this.categoryName, categoryId: this.categoryId}}" class="add">添加商品</router-link></div>
+                      <div class="add-wrap"><router-link href="#" :to="{name:'BuildProduct',params:{from:'ShopDecorate', categoryName: this.categoryName, categoryId: this.categoryId}}" class="add">添加商品</router-link></div>
                   </div>
               </div>
           </div>
@@ -66,8 +66,8 @@
                   <p class="weui-tabbar__label">首页</p>
               </router-link>
               <router-link href="javascript:;" class="weui-tabbar__item" to="ShopIndex">
-                  <i class="weui-tabbar__icon  iconfont-dasan-30"></i>
-                  <p class="weui-tabbar__label">小铺中心</p>
+                <i class="weui-tabbar__icon iconfont iconfont-dasan-3"></i>
+                <p class="weui-tabbar__label">预览小铺</p>
               </router-link>
           </div>
       </footer>
@@ -77,7 +77,7 @@
 <script>
   import util from '../assets/js/util.js'
     export default {
-      name: 'BuildIndex',
+      name: 'ShopDecorate',
       data() {
           return {
             categoryUrl: util.api.host + util.api.categoryList,

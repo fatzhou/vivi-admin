@@ -62,8 +62,8 @@
                   <p class="weui-tabbar__label">首页</p>
               </router-link>
               <router-link href="javascript:;" class="weui-tabbar__item" to="ShopIndex">
-                  <i class="weui-tabbar__icon  iconfont-dasan-30"></i>
-                  <p class="weui-tabbar__label">小铺中心</p>
+                <i class="weui-tabbar__icon iconfont iconfont-dasan-3"></i>
+                <p class="weui-tabbar__label">预览小铺</p>
               </router-link>
           </div>
       </footer>

@@ -41,7 +41,7 @@
                 if(data.shopid) {
                   window.info.shopid = data.shopid;
                   window.info.mobile = data.mobile;
-                  this.$router.push('BuildIndex');
+                  this.$router.push('ShopDecorate');
                 } else {
                   this.$router.push('MobileBind');
                 }
