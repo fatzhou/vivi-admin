@@ -51,8 +51,9 @@
               </div>
           </div>
           <p class="notic">
-              <i class="weui-icon-info-circle"></i><span>当前页面为你客户看到的效果。</span>
+              <i class="ico-notic"></i><span>当前页面为你客户看到的效果。</span><a href="javascript:;" class="oper"><i class="iconfont-dasan-9"></i> </a>
           </p>
+
       </div>
 
       <footer>

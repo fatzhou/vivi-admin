@@ -79,15 +79,14 @@ import util from '../assets/js/util.js'
           };
         },
         touchEndCallback(e, ind) {
-          var deltaX = e.changedTouches[0].clientX - this.touchPosition.x,
-              deltaY = e.changedTouches[0].clientY - this.touchPosition.y;
+          // var deltaX = e.changedTouches[0].clientX - this.touchPosition.x,
+          //     deltaY = e.changedTouches[0].clientY - this.touchPosition.y;
 
-          if(Math.abs(deltaX) > 5) {
-            this.$set(this.deleteCategoryFlag,ind,true);
-          } else {
-            this.$set(this.deleteCategoryFlag,ind,false);
-          }
-          console.log(this.deleteCategoryFlag)
+          // if(Math.abs(deltaX) > 5) {
+          //   this.$set(this.deleteCategoryFlag,ind,true);
+          // } else {
+          //   this.$set(this.deleteCategoryFlag,ind,false);
+          // }
           // return false;
         },
         deleteCategory(ind) {

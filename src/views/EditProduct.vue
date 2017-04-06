@@ -17,13 +17,13 @@
                         <div class="weui-uploader">
                             <div class="weui-uploader__hd">
                                 <p class="weui-uploader__title">小铺照片</p>
-                                <div class="weui-uploader__info">{{shopInfo.logoList.length}}/5</div>
+                                <div class="weui-uploader__info">{{shopInfo.logoList.length}}/{{maxPic}}</div>
                             </div>
                             <div class="weui-uploader__bd">
                                 <ul class="weui-uploader__files" id="uploaderFiles">
                                     <li class="weui-uploader__file" @click="showMask(index)" v-for="logo,index in shopInfo.logoList" :style="{'background-image':'url('+logo+')'}"></li>
                                 </ul>
-                                <div class="weui-uploader__input-box">
+                                <div class="weui-uploader__input-box" v-if="shopInfo.logoList.length < maxPic">
                                     <input id="uploaderInput" @change="uploadFileChange" class="weui-uploader__input" type="file" accept="image/*" multiple="">
                                 </div>
                             </div>
@@ -41,14 +41,14 @@
                         {{shopInfo.name||'去填写'}}
                     </div>
                 </router-link>
-                <a class="weui-cell weui-cell_access"  :to="{path:'EditProductItem/desc/'+(shopInfo.desc||'$')}" href="javascript:;">
+<!--                 <a class="weui-cell weui-cell_access"  :to="{path:'EditProductItem/desc/'+(shopInfo.desc||'$')}" href="javascript:;">
                     <div class="weui-cell__bd">
                         <p>小铺介绍</p>
                     </div>
                     <div class="weui-cell__ft">
                       {{shopInfo.desc||'去填写'}}
                     </div>
-                </a>
+                </a> -->
                 <a class="weui-cell weui-cell_access" href="javascript:;">
                     <div class="weui-cell__bd">
                         <p>小铺二维码</p>
@@ -60,7 +60,7 @@
             </div>
             <div class="weui-cells">
                 <!--小铺名称-->
-                <a class="weui-cell weui-cell_access"  :to="{path:'EditProductItem/addr/'+(shopInfo.addr||'$')}" href="javascript:;">
+<!--                 <a class="weui-cell weui-cell_access"  :to="{path:'EditProductItem/addr/'+(shopInfo.addr||'$')}" href="javascript:;">
                     <div class="weui-cell__bd">
                         <p>小铺地址</p>
                     </div>
@@ -68,7 +68,7 @@
                         {{shopInfo.addr||'去填写'}}
                     </div>
                 </a>
-                <router-link  :to="{path:'EditProductItem/mobile/'+(shopInfo.mobile||'$')}" class="weui-cell weui-cell_access" href="javascript:;">
+ -->                <router-link  :to="{path:'EditProductItem/mobile/'+(shopInfo.mobile||'$')}" class="weui-cell weui-cell_access" href="javascript:;">
                     <div class="weui-cell__bd">
                         <p>联系电话</p>
                     </div>
@@ -77,8 +77,7 @@
                     </div>
                 </router-link>
             </div>
-            <div class="weui-cells">
-                <!--小铺名称-->
+<!--             <div class="weui-cells">
                 <a class="weui-cell weui-cell_access" href="javascript:;">
                     <div class="weui-cell__bd">
                         <p>管理员头像</p>
@@ -95,10 +94,10 @@
                         桔子
                     </div>
                 </a>
-            </div>
-            <div class="weui-btn-area">
+            </div> -->
+<!--             <div class="weui-btn-area">
                 <a class="weui-btn weui-btn_primary" href="javascript:" @click="saveShopInfo" id="showTooltips">保存</a>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
@@ -123,6 +122,7 @@
               desc: '',
               mobile: ''
             },
+            maxPic: 3,
             ifMaskDisplay: 'none',
             currentLogoIndex: -1
           }
@@ -142,8 +142,19 @@
         },
       },
       mounted: function() {
-        document.title = '小铺信息';
-
+          document.title = '小铺信息';
+      },
+      activated() {
+        // var params = this.$route.params;
+        // console.log(params)
+        // if(params.key) {
+        //   this.shopInfo[params.key] = params.value;
+        //   console.log(params.key, params.value, this.shopInfo[params.key])
+        // }
+        this.getShopInfo();
+      },
+      methods: {
+        getShopInfo() {
           var postData = {
             openid: window.info.openid,
             token: window.info.token,
@@ -170,16 +181,7 @@
               alert(data.msg);
             }
           });
-      },
-      activated() {
-        var params = this.$route.params;
-        console.log(params)
-        if(params.key) {
-          this.shopInfo[params.key] = params.value;
-          console.log(params.key, params.value, this.shopInfo[params.key])
-        }
-      },
-      methods: {
+        },
         hideMask() {
           this.ifMaskDisplay = 'none';
         },
@@ -205,6 +207,7 @@
             var data = response.body;
             if(data.code == 0) {
               this.shopInfo.logoList.push(data.url);
+              this.saveShopInfo();
             } else {
               alert(data.msg);
             }
@@ -226,8 +229,8 @@
           .then((res)=>{
             var data = res.body;
             if(data.code == 0) {
-              alert('保存店铺信息成功');
-              this.$router.push('ShopIndex');
+              // alert('保存店铺信息成功');
+              // this.$router.push('ShopIndex');
             } else {
               alert(data.msg);
             }

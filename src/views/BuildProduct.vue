@@ -2,15 +2,6 @@
 <div class="container build">
     <div class="wrap product">
         <div class="content">
-                      <!--商品价格-->
-            <div class="weui-cells__title">商品名称</div>
-            <div class="weui-cells">
-                <div class="weui-cell">
-                    <div class="weui-cell__bd">
-                        <input class="weui-input" v-model="name" type="text" placeholder="请输入商品名称">
-                    </div>
-                </div>
-            </div>
             <!--添加图片-->
             <div class="weui-cells weui-cells_form">
               <div class="weui-gallery" @click="hideMask" id="gallery" :style="{display:ifMaskDisplay, opacity: 1}">
@@ -26,13 +17,13 @@
                         <div class="weui-uploader">
                             <div class="weui-uploader__hd">
                                 <p class="weui-uploader__title">添加图片</p>
-                                <div class="weui-uploader__info"><span>{{imgList.length}}</span>/5</div>
+                                <div class="weui-uploader__info"><span>{{imgList.length}}</span>/{{maxPic}}</div>
                             </div>
                             <div class="weui-uploader__bd">
                                 <ul class="weui-uploader__files" id="uploaderFiles">
                                     <li class="weui-uploader__file" v-for="item,index in imgList" :style="{'background-image':'url('+item+')'}" @click="showMask(index)"></li>
                                 </ul>
-                                <div class="weui-uploader__input-box" v-show="imgList.length<5">
+                                <div class="weui-uploader__input-box" v-show="imgList.length<maxPic">
                                     <input id="uploaderInput" @change="uploadFileChange" class="weui-uploader__input" type="file" accept="image/*" multiple="">
                                 </div>
                             </div>
@@ -40,8 +31,19 @@
                     </div>
                 </div>
             </div>
+                      <!--商品价格-->
+            <div class="weui-cells__title">商品名称</div>
+            <div class="weui-cells">
+                <div class="weui-cell">
+                    <div class="weui-cell__bd" style="display:relative;">
+                        <input class="weui-input" v-model="name" maxLength="7" type="text" placeholder="请输入商品名称">
+                        <span style="position:absolute;top: 0;right: 10px;line-height: 44px;;">{{name.length}}/{{maxNameLength}}</span>
+                    </div>
+                </div>
+            </div>
+
             <!--添加描述-->
-            <div class="weui-cells__title">添加描述</div>
+<!--             <div class="weui-cells__title">添加描述</div>
             <div class="weui-cells weui-cells_form">
                 <div class="weui-cell">
                     <div class="weui-cell__bd">
@@ -50,7 +52,7 @@
                     </div>
                 </div>
             </div>
-            <!--商品价格-->
+ -->            <!--商品价格-->
             <div class="weui-cells__title">商品价格</div>
             <div class="weui-cells">
                 <div class="weui-cell">
@@ -90,6 +92,7 @@ import util from '../assets/js/util.js'
             url: util.api.host + util.api.buildProduct,
             imgList: [],
             description: '',
+            maxNameLength: 7,
             name: '',
             price: '',
             category: '',
@@ -97,13 +100,15 @@ import util from '../assets/js/util.js'
             buttonName: '保存商品',
             ifMaskDisplay: 'none',
             logo: '',
+            maxPic: 3,
             currentSelectLogoIndex: -1
           }
       },
       created: function() {
-        document.title = '添加商品';
+
       },
       activated() {
+        document.title = '添加商品';
         if(this.$route.params.categoryId) {
           this.clearData();
           this.category = this.$route.params.categoryId;
@@ -122,6 +127,7 @@ import util from '../assets/js/util.js'
           this.imgList = [].concat(prodinfo.image.split('|'));
           this.categoryName = this.$route.params.categoryName || '请添加商品分类';
           console.log(this.imgList)
+          document.title = '编辑商品';
         }
       },
       methods: {
@@ -192,7 +198,7 @@ import util from '../assets/js/util.js'
             var data = res.body;
             console.log(data)
             if(data.code == 0) {
-              alert('商品添加成功');
+              alert('商品保存成功');
               this.clearData();
               this.$router.push('ShopDecorate');
               // this.goBack();
