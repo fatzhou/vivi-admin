@@ -59,7 +59,7 @@ import util from '../assets/js/util.js'
             ifMaskDisplay: 'none'
           }
       },
-      created: function() {
+      activated: function() {
         document.title = '创建小铺';
       },
       methods: {

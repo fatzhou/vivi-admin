@@ -13,19 +13,22 @@
            </div>
            <div class="weui-cells__title" v-if="categoryList.length>0"><i class="iconfont-dasan-17"></i>选择分类</div>
            <div class="weui-cells weui-cells_checkbox">
-               <label v-for="item,index in categoryList"  class="weui-cell weui-check__label" :class="{del:deleteCategoryFlag[index]}">
-                   <div class="weui-cell__bd" @touchstart="touchStartCallback" @touchend="touchEndCallback($event, index)">
+               <label v-for="item,index in categoryList"  class="weui-cell weui-check__label">
+                   <div class="weui-cell__bd" >
                        <p>{{item.name}}</p>
                    </div>
-                   <div v-if="!deleteCategoryFlag[index]" class="weui-cell__ft">
+                   <div  class="weui-cell__ft">
                        <input type="radio" class="weui-check" name="radio1" >
-                       <span @click="goBack(item.classid, item.name)" class="weui-icon-checked"></span>
+                       <span @click="selectCategory(item.classid, item.name)" class="weui-icon-checked"></span>
                    </div>
-                   <div v-else class="aaa weui-cell__ft" @click="deleteCategory(index)">
+<!--                    <div v-else class="aaa weui-cell__ft" @click="deleteCategory(index)">
                      <span>删除</span>
-                   </div>
+                   </div> -->
                </label>
            </div>
+            <div class="weui-btn-area">
+                <a  @click.prevent="goNext" class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips">选择分类</a>
+            </div>
        </div>
     </div>
 </div></template>
@@ -44,12 +47,15 @@ import util from '../assets/js/util.js'
               y: 0
             },
             deleteCategoryFlag: [],
+            selectClassId: '',
+            selectClassName: ''
           }
       },
        mounted: function() {
-        document.title = '选择商品分类';//by:yoyo
+        // document.title = '选择商品分类';//by:yoyo
       },
       activated: function() {
+        document.title = '选择商品分类';//by:yoyo
           var postData = {
             openid: window.info.openid,
             token: window.info.token,
@@ -61,10 +67,10 @@ import util from '../assets/js/util.js'
             var data = res.body;
             if(data.code == 0) {
               this.categoryList = data.classlist;
-              this.deleteCategoryFlag = new Array(this.categoryList.length);
-              this.categoryList.forEach((item, index)=>{
-                this.deleteCategoryFlag[index] = false;
-              })
+              // this.deleteCategoryFlag = new Array(this.categoryList.length);
+              // this.categoryList.forEach((item, index)=>{
+              //   this.deleteCategoryFlag[index] = false;
+              // })
               // this.$router.push('BuildProduct');
             } else {
               alert(data.msg);
@@ -72,6 +78,19 @@ import util from '../assets/js/util.js'
           });
       },
       methods: {
+        goNext() {
+          if(!this.selectClassId) {
+            alert('请选择分类');
+            return false;
+          }
+          this.$router.push({
+            name: 'BuildProduct',
+            params: {
+              categoryId: this.selectClassId,
+              categoryName: this.selectClassName
+            }
+          })
+        },
         touchStartCallback(e) {
           this.touchPosition = {
             x: e.touches[0].clientX,
@@ -109,17 +128,18 @@ import util from '../assets/js/util.js'
             }
           });
         },
-        goBack(id, name) {
+        goBack() {
           this.$router.push({
             name: 'BuildProduct',
             params: {
-              categoryId: id,
-              categoryName: name
+              categoryId: this.selectClassId,
+              categoryName: this.selectClassName
             }
           });
         },
-        selectCategory(n) {
-          console.log(n)
+        selectCategory(classid, name) {
+          this.selectClassId = classid;
+          this.selectClassName = name;
         }
       }
     }

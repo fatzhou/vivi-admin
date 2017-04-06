@@ -145,6 +145,7 @@
           document.title = '小铺信息';
       },
       activated() {
+        document.title = '小铺信息';
         // var params = this.$route.params;
         // console.log(params)
         // if(params.key) {

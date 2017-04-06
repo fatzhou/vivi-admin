@@ -75,7 +75,7 @@
             previewSelected: 1,
           }
       },
-      created() {
+      activated() {
         document.title = '选择店铺功能';
       },
       methods: {

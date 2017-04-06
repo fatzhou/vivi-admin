@@ -40,6 +40,9 @@
           }
       },
       created: function() {
+        // document.title = "绑定手机号";
+      },
+      activated: function() {
         document.title = "绑定手机号";
       },
       methods: {

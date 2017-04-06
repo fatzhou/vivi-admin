@@ -14,7 +14,7 @@
       </div>
 
       <div v-else class="wrap">
-          <div class="shop-wrap">
+          <div class="shop-wrap" :class="{'no-top': closeBar}">
               <div class="shop-layer">
                   <div class="weui-panel__hd">
                       <div class="weui-media-box weui-media-box_appmsg" @click="updateItemInCategory('', -1)" :class="{'current': -1==currentIndex}">
@@ -36,13 +36,13 @@
                                 {{item.name}}
                               </h4>
 
-                              <p class="weui-media-box__desc">{{item.desc||'暂无商品描述'}}</p>
+                              <!-- <p class="weui-media-box__desc">{{item.desc||'暂无商品描述'}}</p> -->
 
                               <div class="weui-media-box__info"><span>{{item.price}}元</span>
                                 <p class="price-oper">
-                                  <a href="#"><i class="iconfont-dasan-11"></i> </a>
+                                  <a href="javascript:;"><i class="iconfont-dasan-11"></i> </a>
                                   <span>12</span>
-                                  <a href="#" class=""><i class="iconfont-dasan-12"></i> </a>
+                                  <a href="javascript:;" class=""><i class="iconfont-dasan-12"></i> </a>
                                 </p>
                               </div>
                           </div>
@@ -50,8 +50,9 @@
                   </div>
               </div>
           </div>
-          <p class="notic">
-              <i class="ico-notic"></i><span>当前页面为你客户看到的效果。</span><a href="javascript:;" class="oper"><i class="iconfont-dasan-9"></i> </a>
+          <p class="notic" v-if="!closeBar">
+              <i class="ico-notic"></i><span>当前页面为你客户看到的效果。</span>
+              <a href="javascript:;" class="oper" @click="hideBar"><i class="iconfont-dasan-9"></i> </a>
           </p>
 
       </div>
@@ -62,9 +63,9 @@
                   <i class="weui-tabbar__icon  iconfont-dasan-28"></i>
                   <p class="weui-tabbar__label">首页</p>
               </router-link>
-              <router-link href="javascript:;" class="weui-tabbar__item" to="ShopIndex">
+              <router-link href="javascript:;" class="weui-tabbar__item" to="ShopDecorate">
                 <i class="weui-tabbar__icon iconfont iconfont-dasan-3"></i>
-                <p class="weui-tabbar__label">预览小铺</p>
+                <p class="weui-tabbar__label">装修小铺</p>
               </router-link>
           </div>
       </footer>
@@ -82,12 +83,14 @@
             itemList: [],
             categoryList: [],
             currentIndex: -1,
+            closeBar: false
           }
       },
       mounted: function() {
-        document.title = '预览小铺';//by:yoyo
+        // document.title = '预览小铺';//by:yoyo
       },
       activated: function() {
+        document.title = '预览小铺';//by:yoyo
         this.getCategories(()=>{
           if(this.categoryList.length > 0) {
             this.getItemsInCategory('');
@@ -112,6 +115,9 @@
         }
       },
       methods: {
+        hideBar() {
+          this.closeBar = true;
+        },
         queryCategoryName(classid) {
           if(this.categoryName) {
             return this.categoryName;
@@ -203,5 +209,11 @@
     }
     .block {
       display: block;
+    }
+    .no-top .shop-layer .weui-panel__hd {
+      top: 0!important;
+    }
+    .no-top .shop-layer .weui-panel__bd {
+      padding-top: 0!important;
     }
 </style>

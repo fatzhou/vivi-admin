@@ -65,7 +65,7 @@
                   <i class="weui-tabbar__icon  iconfont-dasan-28"></i>
                   <p class="weui-tabbar__label">首页</p>
               </router-link>
-              <router-link href="javascript:;" class="weui-tabbar__item" to="ShopIndex">
+              <router-link href="javascript:;" class="weui-tabbar__item" to="BuildIndex">
                 <i class="weui-tabbar__icon iconfont iconfont-dasan-3"></i>
                 <p class="weui-tabbar__label">预览小铺</p>
               </router-link>
@@ -91,6 +91,7 @@
         document.title = '小铺装修';//by:yoyo
       },
       activated: function() {
+        document.title = '小铺装修';//by:yoyo
         this.getCategories(()=>{
           if(this.categoryList.length > 0) {
             this.getItemsInCategory('');

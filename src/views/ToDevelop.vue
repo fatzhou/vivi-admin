@@ -19,7 +19,7 @@
 
           }
       },
-       mounted: function() {
+      activated: function() {
         document.title = '敬请期待';
       }
     }

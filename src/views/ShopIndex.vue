@@ -102,9 +102,10 @@
         }
       },
       mounted: function() {
-        document.title = '我的小铺';
+        // document.title = '我的小铺';
       },
       activated() {
+        document.title = '我的小铺';
         this.queryShopInfo();
         this.queryShopOrders();
       },

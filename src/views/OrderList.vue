@@ -52,6 +52,7 @@
         document.title = '订单处理';
       },
       activated() {
+        document.title = '订单列表';
         // this.queryOrderInfo();
         var orderList = this.$router.params.orderList;
         orderList.forEach((item)=>{
