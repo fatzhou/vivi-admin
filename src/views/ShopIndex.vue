@@ -25,7 +25,7 @@
                 <div class="clear"></div>
                 <div class="grids-tips " v-if="orderCount > 0" @click="queryOrderList">
                     <div class="grids-tips-cont">
-                        <p><i class="weui-icon-info-circle"></i> 你有未处理的订单信息，请查看</p>
+                        <p><i class="weui-icon-info-circle"></i> 你有{{nodealcount}}条未处理的订单信息，请查看</p>
                     </div>
                 </div>
             </div>
@@ -84,8 +84,9 @@
             currentTab: 0,
             shopInfo: {},
             orderCount: 0,
+            nodealcount: 0,
             orderList: [],
-            pageno: '',
+            pageno: 1,
             pagesize: ''
           }
       },
@@ -121,7 +122,8 @@
             token: window.info.token,
             shopid: window.info.shopid,
             pageno: this.pageno,
-            pagesize: this.pagesize
+            pagesize: this.pagesize,
+            // date: '20170415'
           };
 
           this.$http.post(this.queryOrder, postData)
@@ -131,6 +133,7 @@
             if(data.code == 0) {
               this.orderList = data.orderList;
               this.orderCount = data.count;
+              this.nodealcount = data.nodealcount;
             } else {
               // alert(data.msg);
             }

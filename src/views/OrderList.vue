@@ -90,7 +90,8 @@
             token: window.info.token,
             shopid: window.info.shopid,
             pageno: this.pageno,
-            pagesize: this.pagesize
+            pagesize: this.pagesize,
+            // date: '20170415'
           };
 
           this.$http.post(this.url, postData)
@@ -98,7 +99,7 @@
             var data = res.body;
             console.log(data,'orderlist')
             if(data.code == 0) {
-              var orderList = data.orderlist;
+              var orderList = data.orderlist || [];
               orderList.forEach((item)=>{
                 item.detailJson = JSON.parse(item.detail);
               })

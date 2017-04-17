@@ -20,6 +20,7 @@
       window.info.openid = query['openid'] || '';
       window.info.token = query['access_token'] || '';
       window.info.code = query['code'] || '';
+
       if(window.info.code) {
         //只有code,需要先换取token
         this.getToken(()=>{
@@ -38,14 +39,19 @@
     methods: {
       getToken(cb) {
         this.$http.get(this.tokenUrl, {
-          code: window.info.code
+          params: {
+            code: window.info.code
+          }
         })
         .then((res)=>{
           var data = res.body;
-          window.info.appid = data.appid;
+          if(typeof data === 'string') {
+            data = JSON.parse(data);
+          }
+          console.log(data, data.openid, data.access_token)
+          window.info.openid = data.openid;
           window.info.token = data.access_token;
           cb && cb();
-
         });
       },
       queryShop() {
@@ -53,7 +59,15 @@
             openid: window.info.openid,
             token: window.info.token,
           };
-          console.log(this.userInfoUrl, postData)
+          var from = this.$route.params && this.$route.params.from;
+
+          if(from === 'ShopDecorate' || from === 'ShopIndex' || from === 'BuildIndex') {
+
+          } else {
+            from = '';
+          }
+
+          console.log(window.info, this.userInfoUrl, postData, from)
 
           // this.$http.post(this.userInfoUrl, postData)
           // .then((res1)=>{
@@ -63,11 +77,11 @@
             .then((res)=>{
               var data = res.body;
               if(data.code == 0) {
-                console.log(data)
+                console.log(data);
                 if(data.shopid) {
                   window.info.shopid = data.shopid;
                   window.info.mobile = data.mobile;
-                  this.$router.push('ShopDecorate');
+                  this.$router.push(from || 'ShopDecorate');
                 } else {
                   this.$router.push('MobileBind');
                 }

@@ -24,6 +24,7 @@ Vue.mixin({
     document.getElementById('app').scrollTop = 0;
   },
   mounted() {
+    var name = this.$route.matched[0].name;
     if(!window.info.openid && location.hash.indexOf('CheckShop') != 2 && location.hash.indexOf('ToDevelop') != 2) {
       // if(location.hash.indexOf('ShopIndex') != 2 && location.hash.indexOf('ShopDecorate') != 2 && location.hash.indexOf('BuildIndex') != 2) {
 
@@ -33,7 +34,10 @@ Vue.mixin({
       //   });
       // }
         router.push({
-          name: 'CheckShop'
+          name: 'CheckShop',
+          params: {
+            from: name
+          }
         });
     }
 
