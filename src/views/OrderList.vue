@@ -9,7 +9,7 @@
             </div>
             <div class="weui-form-preview__bd">
                 <div v-for="it in item.detailJson" class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">{{ite.name}}</label>
+                    <label class="weui-form-preview__label">{{it.name}}</label>
                     <span class="weui-form-preview__value">{{it.price}}元<small>x{{it.count}}</small></span>
                 </div>
                 <div class="weui-form-preview__item total-price">
@@ -49,16 +49,18 @@
           }
       },
       mounted: function() {
-        document.title = '订单处理';
+        // document.title = '订单处理';
       },
       activated() {
         document.title = '订单列表';
-        // this.queryOrderInfo();
-        var orderList = this.$router.params.orderList;
-        orderList.forEach((item)=>{
-          item.detailJson = JSON.parse(item.detail);
-        })
-        this.orderList = orderList;
+        this.queryOrderInfo();
+        // if(this.$router.params) {
+        //   var orderList = this.$router.params.orderList || [];
+        //   orderList.forEach((item)=>{
+        //     item.detailJson = JSON.parse(item.detail);
+        //   })
+        //   this.orderList = orderList;
+        // }
       },
       methods: {
         dealOrder(orderno) {
@@ -94,7 +96,7 @@
           this.$http.post(this.url, postData)
           .then((res)=>{
             var data = res.body;
-
+            console.log(data,'orderlist')
             if(data.code == 0) {
               var orderList = data.orderlist;
               orderList.forEach((item)=>{

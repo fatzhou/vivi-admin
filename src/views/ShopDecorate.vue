@@ -1,11 +1,14 @@
 <template>
   <div class="container build">
       <div v-if="categoryList.length===0" class="wrap">
-           <p class="notic">
+<!--            <p class="notic">
                <i class="weui-icon-info-circle"></i>
                <span>小铺已生成，请添加商品信息</span>
-           </p>
-          <div class="content wrap">
+           </p> -->
+           <p class="notic" v-if="showTips">
+              <i class="ico-notic"></i><span>小铺已生成，请添加商品信息</span><a href="javascript:;" @click="hideTips" class="oper"><i class="iconfont-dasan-9"></i> </a>
+          </p>
+          <div class="content wrap" :style="{paddingTop: showTips?'100px':'50px'}">
               <router-link href="javascript:;" class="no-add" to="BuildProduct">
                 <i class="ico-addprodcut"></i>
                 <span>添加商品</span>
@@ -17,10 +20,10 @@
           <div class="shop-wrap">
               <div class="shop-layer">
                   <div class="weui-panel__hd" style="top: 0;">
-                      <div class="weui-media-box weui-media-box_appmsg" @click="updateItemInCategory('', -1)" :class="{'current': -1==currentIndex}">
+                      <div class="weui-media-box weui-media-box_appmsg" @click="updateItemInCategory(-1)" :class="{'current': -1==currentIndex}">
                           全部分类
                       </div>
-                      <div v-for="item,index in categoryList" @click="updateItemInCategory(item.classid, index)" class="weui-media-box weui-media-box_appmsg eps" :class="{'current': index==currentIndex}">
+                      <div v-for="item,index in categoryList" @click="updateItemInCategory(index)" class="weui-media-box weui-media-box_appmsg eps" :class="{'current': index==currentIndex}">
                           {{item.name}} <a href="javascript:;" @click="updageCategoryName(item.classid, item.name)" class="oper none" :class="{'block': index==currentIndex}"><i class="ico-edit"></i> </a>
                       </div>
                       <div class="add-wrap" style="margin-top: 15px;"><router-link href="#"  :to="{name:'BuildProductCategoryAdd',params:{from:'ShopDecorate'}}" class="add">添加分类</router-link></div>
@@ -61,13 +64,13 @@
 
       <footer>
           <div class="weui-tabbar">
-              <router-link href="javascript:;" class="weui-tabbar__item weui-bar__item_on" to="EditProduct">
+              <router-link href="javascript:;" class="weui-tabbar__item weui-bar__item_on" to="ShopDecorate">
                   <i class="weui-tabbar__icon  iconfont-dasan-28"></i>
                   <p class="weui-tabbar__label">首页</p>
               </router-link>
-              <router-link href="javascript:;" class="weui-tabbar__item" to="BuildIndex">
+              <router-link href="javascript:;" class="weui-tabbar__item" to="ShopIndex">
                 <i class="weui-tabbar__icon iconfont iconfont-dasan-3"></i>
-                <p class="weui-tabbar__label">预览小铺</p>
+                <p class="weui-tabbar__label">管理中心</p>
               </router-link>
           </div>
       </footer>
@@ -85,16 +88,17 @@
             itemList: [],
             categoryList: [],
             currentIndex: -1,
+            showTips: true
           }
       },
        mounted: function() {
-        document.title = '小铺装修';//by:yoyo
+        // document.title = '小铺装修';//by:yoyo
       },
       activated: function() {
         document.title = '小铺装修';//by:yoyo
         this.getCategories(()=>{
           if(this.categoryList.length > 0) {
-            this.getItemsInCategory('');
+            this.getItemsInCategory(this.currentIndex);
             // this.getItemsInCategory(this.categoryList[this.currentIndex].classid);
           }
         });
@@ -116,6 +120,9 @@
         }
       },
       methods: {
+        hideTips() {
+          this.showTips = false;
+        },
         queryCategoryName(classid) {
           console.log(classid, this.categoryList)
           if(this.categoryName) {
@@ -152,13 +159,13 @@
               this.categoryList = data.classlist;
               cb && cb();
             } else {
-              alert(data.msg);
+              // alert(data.msg);
             }
           });
         },
-        updateItemInCategory(cat, index) {
+        updateItemInCategory(index) {
           this.currentIndex = index;
-          this.getItemsInCategory(cat);
+          this.getItemsInCategory(index);
         },
         updageCategoryName(catId, name) {
           this.$router.push({
@@ -175,8 +182,9 @@
             token: window.info.token,
             shopid: window.info.shopid,
           };
-          if(cat) {
-            postData.classid = cat;
+          if(cat != -1) {
+            console.log(cat)
+            postData.classid = this.categoryList[cat].classid;
           }
           this.$http.post(this.itemsUrl, postData)
           .then((res)=>{
@@ -185,7 +193,7 @@
             if(data.code == 0) {
               this.itemList = data.prodlist;
             } else {
-              alert(data.msg);
+              // alert(data.msg);
             }
           });
         }

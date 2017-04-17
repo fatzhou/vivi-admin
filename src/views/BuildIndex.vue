@@ -1,11 +1,27 @@
 <template>
   <div class="container build">
-      <div v-if="categoryList.length===0" class="wrap">
+<!--       <div v-if="categoryList.length===0" class="wrap">
            <p class="notic">
                <i class="weui-icon-info-circle"></i>
                <span>小铺已生成，请添加商品信息</span>
            </p>
           <div class="content wrap">
+              <router-link href="javascript:;" class="no-add" to="BuildProduct">
+                <i class="ico-addprodcut"></i>
+                <span>添加商品</span>
+              </router-link>
+          </div>
+      </div> -->
+
+      <div v-if="categoryList.length===0" class="wrap">
+<!--            <p class="notic">
+               <i class="weui-icon-info-circle"></i>
+               <span>小铺已生成，请添加商品信息</span>
+           </p> -->
+           <p class="notic" v-if="!closeBar">
+              <i class="ico-notic"></i><span>小铺已生成，请添加商品信息</span><a href="javascript:;" @click="hideBar" class="oper"><i class="iconfont-dasan-9"></i> </a>
+          </p>
+          <div class="content wrap" :style="{paddingTop: !closeBar?'100px':'50px'}">
               <router-link href="javascript:;" class="no-add" to="BuildProduct">
                 <i class="ico-addprodcut"></i>
                 <span>添加商品</span>
@@ -59,13 +75,13 @@
 
       <footer>
           <div class="weui-tabbar">
-              <router-link href="javascript:;" class="weui-tabbar__item weui-bar__item_on" to="EditProduct">
+              <router-link href="javascript:;" class="weui-tabbar__item weui-bar__item_on" to="ShopDecorate">
                   <i class="weui-tabbar__icon  iconfont-dasan-28"></i>
                   <p class="weui-tabbar__label">首页</p>
               </router-link>
-              <router-link href="javascript:;" class="weui-tabbar__item" to="ShopDecorate">
+              <router-link href="javascript:;" class="weui-tabbar__item" to="ShopIndex">
                 <i class="weui-tabbar__icon iconfont iconfont-dasan-3"></i>
-                <p class="weui-tabbar__label">装修小铺</p>
+                <p class="weui-tabbar__label">管理中心</p>
               </router-link>
           </div>
       </footer>
@@ -153,7 +169,7 @@
               this.categoryList = data.classlist;
               cb && cb();
             } else {
-              alert(data.msg);
+              // alert(data.msg);
             }
           });
         },
@@ -186,7 +202,7 @@
             if(data.code == 0) {
               this.itemList = data.prodlist;
             } else {
-              alert(data.msg);
+              // alert(data.msg);
             }
           });
         }

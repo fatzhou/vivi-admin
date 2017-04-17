@@ -33,10 +33,10 @@
           }
       },
       mounted: function() {
-        document.title = '编辑商品';//by:yoyo
+        // document.title = '编辑商品';//by:yoyo
       },
       activated: function() {
-        document.title = '编辑商品';//by:yoyo
+        document.title = '店铺信息修改';//by:yoyo
         //重新拉取店铺信息
         this.getShopInfo();
 
@@ -82,8 +82,8 @@
                 logoList: data.logo.split('|')||[],
                 name: data.name,
                 mobile: data.mobile,
-                address: data.address || '',
-                desc: data.desc || ''
+                addr: data.addr || '',
+                desc: data.desc || data.des || ''
               }
             } else {
               alert(data.msg);
@@ -111,6 +111,8 @@
             shopid: window.info.shopid,
             name: this.shopInfo.name,
             logo: this.shopInfo.logoList.join('|'),
+            desc: this.shopInfo.desc,
+            addr: this.shopInfo.addr
           };
 
           postData[this.fieldName] = this.itemValue;

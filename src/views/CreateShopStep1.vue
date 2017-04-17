@@ -140,5 +140,7 @@ import util from '../assets/js/util.js'
     background: -webkit-gradient(#febf83, #f97a4d);
     background-image: linear-gradient(#febf83, #f97a4d);
     background-repeat: no-repeat;
+    overflow: scroll;
+    -webkit-overflow-scrolling : touch;
   }
 </style>

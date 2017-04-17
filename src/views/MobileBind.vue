@@ -80,7 +80,7 @@
               window.info.mobile = this.mobile;
               this.$router.push('CreateShopStep1');
             } else {
-              alert(data.msg);
+              // alert(data.msg);
             }
           });
         }

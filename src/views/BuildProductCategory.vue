@@ -18,7 +18,7 @@
                        <p>{{item.name}}</p>
                    </div>
                    <div  class="weui-cell__ft">
-                       <input type="radio" class="weui-check" name="radio1" >
+                       <input type="radio" :checked="item.classid==selectClassId" class="weui-check" name="radio1" >
                        <span @click="selectCategory(item.classid, item.name)" class="weui-icon-checked"></span>
                    </div>
 <!--                    <div v-else class="aaa weui-cell__ft" @click="deleteCategory(index)">
@@ -27,7 +27,7 @@
                </label>
            </div>
             <div class="weui-btn-area">
-                <a  @click.prevent="goNext" class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips">选择分类</a>
+                <a  @click.prevent="goNext" class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips">确定</a>
             </div>
        </div>
     </div>
@@ -46,6 +46,7 @@ import util from '../assets/js/util.js'
               x: 0,
               y: 0
             },
+            prodid: '',
             deleteCategoryFlag: [],
             selectClassId: '',
             selectClassName: ''
@@ -56,6 +57,10 @@ import util from '../assets/js/util.js'
       },
       activated: function() {
         document.title = '选择商品分类';//by:yoyo
+        this.selectClassId = this.$route.params.categoryId || '';
+        this.selectClassName = this.$route.params.categoryName || '';
+        console.log(this.$route.params)
+        this.prodid = this.$route.params.prodid || '';
           var postData = {
             openid: window.info.openid,
             token: window.info.token,
@@ -73,7 +78,7 @@ import util from '../assets/js/util.js'
               // })
               // this.$router.push('BuildProduct');
             } else {
-              alert(data.msg);
+              // alert(data.msg);
             }
           });
       },
@@ -87,7 +92,8 @@ import util from '../assets/js/util.js'
             name: 'BuildProduct',
             params: {
               categoryId: this.selectClassId,
-              categoryName: this.selectClassName
+              categoryName: this.selectClassName,
+              prodid: this.prodid
             }
           })
         },

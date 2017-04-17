@@ -41,14 +41,14 @@
                         {{shopInfo.name||'去填写'}}
                     </div>
                 </router-link>
-<!--                 <a class="weui-cell weui-cell_access"  :to="{path:'EditProductItem/desc/'+(shopInfo.desc||'$')}" href="javascript:;">
+                <router-link class="weui-cell weui-cell_access"  :to="{path:'EditProductItem/desc/'+(shopInfo.desc||'$')}" href="javascript:;">
                     <div class="weui-cell__bd">
                         <p>小铺介绍</p>
                     </div>
                     <div class="weui-cell__ft">
                       {{shopInfo.desc||'去填写'}}
                     </div>
-                </a> -->
+                </router-link>
                 <a class="weui-cell weui-cell_access" href="javascript:;">
                     <div class="weui-cell__bd">
                         <p>小铺二维码</p>
@@ -60,15 +60,15 @@
             </div>
             <div class="weui-cells">
                 <!--小铺名称-->
-<!--                 <a class="weui-cell weui-cell_access"  :to="{path:'EditProductItem/addr/'+(shopInfo.addr||'$')}" href="javascript:;">
+                <router-link class="weui-cell weui-cell_access"  :to="{path:'EditProductItem/addr/'+(shopInfo.addr||'$')}" href="javascript:;">
                     <div class="weui-cell__bd">
                         <p>小铺地址</p>
                     </div>
                     <div class="weui-cell__ft">
                         {{shopInfo.addr||'去填写'}}
                     </div>
-                </a>
- -->                <router-link  :to="{path:'EditProductItem/mobile/'+(shopInfo.mobile||'$')}" class="weui-cell weui-cell_access" href="javascript:;">
+                </router-link>
+                <router-link  :to="{path:'EditProductItem/mobile/'+(shopInfo.mobile||'$')}" class="weui-cell weui-cell_access" href="javascript:;">
                     <div class="weui-cell__bd">
                         <p>联系电话</p>
                     </div>
@@ -171,15 +171,15 @@
                 logoList: data.logo.split('|')||[],
                 name: data.name,
                 mobile: data.mobile,
-                address: ' ',
-                desc: ''
+                addr: data.addr,
+                desc: data.desc || data.des || ''
               }
 
               console.log(this.shopInfo);
               // this.shopQrcode = this.qrcode;
               document.getElementById('qrcode-wrap').append(this.qrcode);
             } else {
-              alert(data.msg);
+              // alert(data.msg);
             }
           });
         },

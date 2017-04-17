@@ -13,7 +13,8 @@ var api = {
     queryOrder: '/api/shop/orderquery',
     userInfo: '/api/mp/getuserinfo',
     dealOrder: '/api/shop/orderdeal',
-    userInfo: '/api/mp/getuserinfo'
+    userInfo: '/api/mp/getuserinfo',
+    getToken: '/api/mp/getAuthInfoByCode'
 };
 
 var validator = {
@@ -56,7 +57,7 @@ function getUrlKey(name) {
       }
    }
    return theRequest;
- }
+}
 
 module.exports = {
     api: api,

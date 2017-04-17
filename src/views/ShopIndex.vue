@@ -84,7 +84,9 @@
             currentTab: 0,
             shopInfo: {},
             orderCount: 0,
-            orderList: []
+            orderList: [],
+            pageno: '',
+            pagesize: ''
           }
       },
       computed: {
@@ -125,11 +127,12 @@
           this.$http.post(this.queryOrder, postData)
           .then((res)=>{
             var data = res.body;
+            console.log(data)
             if(data.code == 0) {
               this.orderList = data.orderList;
               this.orderCount = data.count;
             } else {
-              alert(data.msg);
+              // alert(data.msg);
             }
           });
         },
@@ -153,11 +156,12 @@
               // this.shopQrcode = this.qrcode;
               document.getElementById('qrcode-wrap').append(this.qrcode);
             } else {
-              alert(data.msg);
+              // alert(data.msg);
             }
           });
         },
         queryOrderList() {
+          console.log(this.orderList)
           this.$router.push({
             name: 'OrderList',
             params: {

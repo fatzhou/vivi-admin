@@ -23,14 +23,22 @@ Vue.mixin({
   beforeMount: function () {
     document.getElementById('app').scrollTop = 0;
   },
-  created: function() {
-    if(!window.info.openid && location.hash.indexOf('CheckShop') != 0 && location.hash.indexOf('ToDevelop') != 0) {
-      // location.reload();
-      router.push({
-        name: 'CheckShop'
-      });
+  mounted() {
+    if(!window.info.openid && location.hash.indexOf('CheckShop') != 2 && location.hash.indexOf('ToDevelop') != 2) {
+      // if(location.hash.indexOf('ShopIndex') != 2 && location.hash.indexOf('ShopDecorate') != 2 && location.hash.indexOf('BuildIndex') != 2) {
+
+      // } else {
+      //   router.push({
+      //     name: 'CheckShop'
+      //   });
+      // }
+        router.push({
+          name: 'CheckShop'
+        });
     }
 
+  },
+  activated: function() {
     var i = document.createElement('iframe');
     i.src = '//m.baidu.com/favicon.ico';
     i.style.display = 'none';

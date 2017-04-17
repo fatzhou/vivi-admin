@@ -64,7 +64,7 @@
             <!--商品分类-->
             <div class="weui-cells__title">商品分类</div>
             <div class="weui-cells">
-                <router-link class="weui-cell weui-cell_access" href="javascript:;" to="BuildProductCategory">
+                <router-link class="weui-cell weui-cell_access" href="javascript:;" :to="{name:'BuildProductCategory',params:{prodid: prodid, categoryId: category, categoryName: categoryName}}">
                     <div class="weui-cell__bd">
                         <p>{{categoryName}}</p>
                     </div>
@@ -76,6 +76,9 @@
                 <a  @click.prevent="goNext" class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips">{{buttonName}}</a>
             </div>
 
+            <div class="weui-btn-area">
+                <a  @click.prevent="goBack" class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips">保存并继续添加</a>
+            </div>
 
         </div>
     </div>
@@ -96,8 +99,9 @@ import util from '../assets/js/util.js'
             name: '',
             price: '',
             category: '',
+            prodid: '',
             categoryName: '请选择商品分类',
-            buttonName: '保存商品',
+            buttonName: '保存并返回',
             ifMaskDisplay: 'none',
             logo: '',
             maxPic: 3,
@@ -108,12 +112,14 @@ import util from '../assets/js/util.js'
 
       },
       activated() {
+        console.log(this.$route.params)
         document.title = '添加商品';
         if(this.$route.params.categoryId) {
-          this.clearData();
+          if(!this.$route.params && this.$route.params.prodid) {
+            this.clearData();
+          }
           this.category = this.$route.params.categoryId;
           this.categoryName  = this.$route.params.categoryName;
-          console.log(this.$route.params)
         } else if(this.$route.params.prodinfo) {
           this.buttonName = '保存并返回';
           //获取并填充商品信息
@@ -145,13 +151,17 @@ import util from '../assets/js/util.js'
           }
         },
         goBack() {
-          this.$router.push('ShopDecorate');
+          this.saveItem(()=>{
+              alert('商品保存成功');
+              this.clearData();
+            })
         },
         clearData() {
           this.imgList = [];
           this.name = '';
           this.price = '';
           this.category = '';
+          this.prodid = '';
           this.description = '';
           this.categoryName = '请添加商品分类';
         },
@@ -176,7 +186,7 @@ import util from '../assets/js/util.js'
           console.log(this.imgList,'abcd')
           return flag;
         },
-        goNext() {
+        saveItem(cb) {
           if(!this.checkForm()) {
             return false;
           }
@@ -198,14 +208,19 @@ import util from '../assets/js/util.js'
             var data = res.body;
             console.log(data)
             if(data.code == 0) {
-              alert('商品保存成功');
-              this.clearData();
-              this.$router.push('ShopDecorate');
+              cb && cb();
               // this.goBack();
             } else {
               alert(data.msg);
             }
           });
+        },
+        goNext() {
+          this.saveItem(()=>{
+              alert('商品保存成功');
+              this.clearData();
+              this.$router.push('ShopDecorate');
+            })
         },
         uploadFileChange(e) {
           console.log(arguments)
@@ -221,6 +236,7 @@ import util from '../assets/js/util.js'
           this.$http.post(this.fileApi, formData)
           .then((response) => {
             var data = response.body;
+            console.log(data)
             if(data.code == 0) {
               this.imgList.push(data.url);
             } else {
