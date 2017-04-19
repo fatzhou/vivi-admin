@@ -25,7 +25,7 @@
                 <div class="clear"></div>
                 <div class="grids-tips " v-if="orderCount > 0" @click="queryOrderList">
                     <div class="grids-tips-cont">
-                        <p><i class="weui-icon-info-circle"></i> 你有{{nodealcount}}条未处理的订单信息，请查看</p>
+                        <p><i class="weui-icon-info-circle"></i> 你有{{orderCount - dealcount}}条未处理的订单信息，请查看</p>
                     </div>
                 </div>
             </div>
@@ -84,9 +84,10 @@
             currentTab: 0,
             shopInfo: {},
             orderCount: 0,
+            dealcount: 0,
             nodealcount: 0,
             orderList: [],
-            pageno: 1,
+            pageno: '',
             pagesize: ''
           }
       },
@@ -134,6 +135,7 @@
               this.orderList = data.orderList;
               this.orderCount = data.count;
               this.nodealcount = data.nodealcount;
+              this.dealcount = data.dealcount;
             } else {
               // alert(data.msg);
             }

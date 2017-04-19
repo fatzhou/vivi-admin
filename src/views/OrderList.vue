@@ -1,23 +1,23 @@
 <template>
   <div class="container dingdan-wrap">
     <div class="wrap">
-        <div v-for="item in orderList" class="weui-form-preview">
+        <div v-for="item, index in orderList" class="weui-form-preview">
             <div class="weui-form-preview__hd">
                 <div class="weui-form-preview__item">
                     <label class="weui-form-preview__label">{{item.time}}</label>
                 </div>
             </div>
             <div class="weui-form-preview__bd">
-                <div v-for="it in item.detailJson" class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">{{it.name}}</label>
+                <div v-for="it in item.detail" class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">{{it.name || it.prodid.slice(0,15)}}</label>
                     <span class="weui-form-preview__value">{{it.price}}元<small>x{{it.count}}</small></span>
                 </div>
                 <div class="weui-form-preview__item total-price">
                     <label class="weui-form-preview__label"></label>
-                    <span class="weui-form-preview__value">商品总额<span>{{item.totalprice}}元</span></span>
+                    <span class="weui-form-preview__value">商品总额<span>{{item.price}}元</span></span>
                 </div>
             </div>
-            <div v-if="item.status !== 3" @click="dealOrder(item.orderno)" class="weui-form-preview__ft">
+            <div v-if="item.status !== 3" @click="dealOrder(item.orderno, index)" class="weui-form-preview__ft">
                 <a class="weui-btn weui-btn_primary " href="javascript:" id="">处理</a>
             </div>
             <div v-else class="weui-form-preview__ft">
@@ -63,7 +63,7 @@
         // }
       },
       methods: {
-        dealOrder(orderno) {
+        dealOrder(orderno, index) {
           var postData = {
             openid: window.info.openid,
             token: window.info.token,
@@ -75,10 +75,7 @@
           .then((res)=>{
             var data = res.body;
             if(data.code == 0) {
-              var dealItem = this.orderList.filter((item)=>{
-                return item.orderno === orderno;
-              });
-              dealItem.status = 3;
+              this.orderList[index].status = 3;
             } else {
               alert(data.msg);
             }
@@ -100,12 +97,12 @@
             console.log(data,'orderlist')
             if(data.code == 0) {
               var orderList = data.orderlist || [];
-              orderList.forEach((item)=>{
-                item.detailJson = JSON.parse(item.detail);
-              })
+              // orderList.forEach((item)=>{
+              //   item.detailJson = JSON.parse(item.detail);
+              // })
               this.orderList = orderList;
             } else {
-              alert(data.msg);
+              // alert(data.msg);
             }
           });
         },
