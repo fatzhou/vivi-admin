@@ -81,6 +81,16 @@
             }
           });
         },
+        computeTime(st) {
+          var dt = new Date(st);
+          var year = dt.getFullYear(),
+              month = dt.getMonth() + 1,
+              day = dt.getDay(),
+              hour = ('00' + dt.getHours()).slice(-2),
+              minutes = ('00' + dt.getMinutes()).slice(-2),
+              seconds = ('00' + dt.getSeconds()).slice(-2);
+          return year + '年' + month + '月' + day + '日' + ' ' + [hour, minutes, seconds].join(':');
+        },
         queryOrderInfo() {
           var postData = {
             openid: window.info.openid,
@@ -97,9 +107,9 @@
             console.log(data,'orderlist')
             if(data.code == 0) {
               var orderList = data.orderlist || [];
-              // orderList.forEach((item)=>{
-              //   item.detailJson = JSON.parse(item.detail);
-              // })
+              orderList.forEach((item)=>{
+                item.time = this.computeTime(item.createtime * 1000);
+              })
               this.orderList = orderList;
             } else {
               // alert(data.msg);

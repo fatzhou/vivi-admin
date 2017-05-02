@@ -9,7 +9,7 @@
                 </div>
             </div>
 
-            <div class="weui-grids">
+            <div class="weui-grids" @click="queryOrderList">
                 <a href="javascript:;" class="weui-grid">
                     <div class="data-cont">
                         {{orderCount}}
@@ -23,7 +23,7 @@
 
                 </a>
                 <div class="clear"></div>
-                <div class="grids-tips " v-if="orderCount > 0" @click="queryOrderList">
+                <div class="grids-tips " v-if="orderCount > dealcount" @click="queryOrderList">
                     <div class="grids-tips-cont">
                         <p><i class="weui-icon-info-circle"></i> 你有{{orderCount - dealcount}}条未处理的订单信息，请查看</p>
                     </div>
@@ -39,7 +39,9 @@
                         <h3>{{shopInfo.name}}</h3>
                         <p>{{shopInfo.mobile}}</p>
                     </div>
-                    <div class="weui-cell__ft" id="qrcode-wrap"></div>
+                    <div class="weui-cell__ft" id="qrcode-wrap">
+                      <img src="../assets/img/qrcode.png" alt="">
+                    </div>
                 </router-link>
             </div>
             <div class="weui-grids">
@@ -67,7 +69,7 @@
 
 <script>
   import util from '../assets/js/util.js'
-  import QR from '../assets/js/qrcode.min.js'
+  // import QR from '../assets/js/qrcode.min.js'
     export default {
       name: 'ShopIndex',
       data() {
@@ -92,18 +94,18 @@
           }
       },
       computed: {
-        qrcode() {
-          var div = document.createElement('div');
-          var qr = new QRCode(div, {
-              text: "http://jindo.dev.naver.com/collie",
-              width: 36,
-              height: 36,
-              colorDark : "#000000",
-              colorLight : "#ffffff",
-              correctLevel : QRCode.CorrectLevel.H
-          });
-          return div;
-        }
+        // qrcode() {
+        //   var div = document.createElement('div');
+        //   var qr = new QRCode(div, {
+        //       text: "http://jindo.dev.naver.com/collie",
+        //       width: 36,
+        //       height: 36,
+        //       colorDark : "#000000",
+        //       colorLight : "#ffffff",
+        //       correctLevel : QRCode.CorrectLevel.H
+        //   });
+        //   return div;
+        // }
       },
       mounted: function() {
         // document.title = '我的小铺';
@@ -159,7 +161,7 @@
               }
               console.log(this.shopInfo);
               // this.shopQrcode = this.qrcode;
-              document.getElementById('qrcode-wrap').append(this.qrcode);
+              // document.getElementById('qrcode-wrap').append(this.qrcode);
             } else {
               // alert(data.msg);
             }
@@ -180,4 +182,8 @@
 
 <style lang="less" scoped>
     @import '../assets/less/tob-index.less';
+    #qrcode-wrap img {
+      width: 50px;
+      height: 50px;
+    }
 </style>

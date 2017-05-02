@@ -65,6 +65,11 @@ const routes = [
     component: require('./views/OrderList')
   },
   {
+    path: '/ShopQrcode',
+    name: 'ShopQrcode',
+    component: require('./views/ShopQrcode')
+  },
+  {
     path: '/',
     name: 'CheckShop',
     component: require('./views/CheckShop')

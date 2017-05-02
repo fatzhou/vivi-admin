@@ -49,12 +49,12 @@
                       {{shopInfo.desc||'去填写'}}
                     </div>
                 </router-link>
-                <a class="weui-cell weui-cell_access" href="javascript:;">
+                <a class="weui-cell weui-cell_access" @click="queryShopQrcode" href="javascript:;">
                     <div class="weui-cell__bd">
                         <p>小铺二维码</p>
                     </div>
                     <div class="weui-cell__ft" id="qrcode-wrap">
-
+                      <img src="../assets/img/qrcode.png" alt="">
                     </div>
                 </a>
             </div>
@@ -105,7 +105,7 @@
 
 <script>
   import util from '../assets/js/util.js'
-  import QR from '../assets/js/qrcode.min.js'
+  // import QR from '../assets/js/qrcode.min.js'
     export default {
       name: 'EditProduct',
       data() {
@@ -114,6 +114,7 @@
             fileApi: util.api.host + util.api.fileApi,
             updateUrl: util.api.host + util.api.shopUpdate,
             shopInfo: {
+              shopid: '',
               logo: '',
               logoList: [],
               name: '',
@@ -128,21 +129,22 @@
           }
       },
       computed: {
-        qrcode() {
-          var div = document.createElement('div');
-          var qr = new QRCode(div, {
-              text: "http://jindo.dev.naver.com/"+window.info.shopid,
-              width: 36,
-              height: 36,
-              colorDark : "#000000",
-              colorLight : "#ffffff",
-              correctLevel : QRCode.CorrectLevel.H
-          });
-          return div;
-        },
+        // qrcode() {
+        //   var div = document.createElement('div');
+        //   var qr = new QRCode(div, {
+        //       text: document.URL,
+        //       width: 36,
+        //       height: 36,
+        //       colorDark : "#000000",
+        //       colorLight : "#ffffff",
+        //       correctLevel : QRCode.CorrectLevel.H
+        //   });
+        //   console.log(div)
+        //   return div;
+        // },
       },
       mounted: function() {
-          document.title = '小铺信息';
+          // document.getElementById('qrcode-wrap').append(this.qrcode);
       },
       activated() {
         document.title = '小铺信息';
@@ -155,6 +157,14 @@
         this.getShopInfo();
       },
       methods: {
+        queryShopQrcode() {
+          this.$router.push({
+            name: 'ShopQrcode',
+            params: {
+              shopid: this.shopInfo.shopid
+            }
+          })
+        },
         getShopInfo() {
           var postData = {
             openid: window.info.openid,
@@ -172,12 +182,15 @@
                 name: data.name,
                 mobile: data.mobile,
                 addr: data.addr,
+                shopid: data.shopid,
                 desc: data.desc || data.des || ''
               }
 
               console.log(this.shopInfo);
               // this.shopQrcode = this.qrcode;
-              document.getElementById('qrcode-wrap').append(this.qrcode);
+              console.log(this.qrcode)
+              // document.getElementById('qrcode-wrap').append(this.qrcode);
+
             } else {
               // alert(data.msg);
             }

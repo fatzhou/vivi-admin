@@ -14,7 +14,9 @@ var api = {
     userInfo: '/api/mp/getuserinfo',
     dealOrder: '/api/shop/orderdeal',
     userInfo: '/api/mp/getuserinfo',
-    getToken: '/api/mp/getAuthInfoByCode'
+    getToken: '/api/mp/getAuthInfoByCode',
+    getXcxToken: '/api/mp/getXCXAccessToken',
+    getQrcode: '/api/mp/getXCXQRCode'
 };
 
 var validator = {
