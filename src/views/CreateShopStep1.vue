@@ -10,33 +10,32 @@
             </div>
         </div>
         <div class="weui-cells weui-cells_form">
-            <div class="weui-gallery" @click="hideMask" id="gallery" :style="{display:ifMaskDisplay, opacity: 1}">
-                <span class="weui-gallery__img" id="galleryImg" :style="{'background-image':'url('+logo+')'}"></span>
-                <div class="weui-gallery__opr">
-                    <a href="javascript:" class="weui-gallery__del">
-                        <i class="weui-icon-delete weui-icon_gallery-delete" @click="deleteLogo"></i>
-                    </a>
-                </div>
-            </div>
-
-            <div class="weui-cell">
-                <div class="weui-cell__bd">
-                    <div class="weui-uploader">
-                        <div class="weui-uploader__hd">
-                            <p class="weui-uploader__title">上传LOGO</p>
-                        </div>
-                        <div class="weui-uploader__bd">
-                            <ul class="weui-uploader__files" id="uploaderFiles" v-if="logo.length>0">
-                                <li class="weui-uploader__file" @click="showMask" :style="{'background-image':'url('+logo+')'}"></li>
-                            </ul>
-                            <div class="weui-uploader__input-box">
-                                <input id="uploaderInput" class="weui-uploader__input" @change="uploadFileChange" type="file" accept="image/*" multiple="">
+              <div class="weui-gallery" @click="hideMask" id="gallery" :style="{display:ifMaskDisplay, opacity: 1}">
+                  <span class="weui-gallery__img" id="galleryImg" :style="{'background-image':'url('+logo+')'}"></span>
+                  <div class="weui-gallery__opr">
+                      <a href="javascript:" class="weui-gallery__del">
+                          <i class="weui-icon-delete weui-icon_gallery-delete" @click="deleteLogo"></i>
+                      </a>
+                  </div>
+              </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <div class="weui-uploader">
+                            <div class="weui-uploader__hd">
+                                <p class="weui-uploader__title">上传LOGO</p>
+                                <div class="weui-uploader__info"><span>{{imgList.length}}</span>/{{maxPic}}</div>
                             </div>
-                            <a href="javascript:;" class="demo">示例</a>
+                            <div class="weui-uploader__bd">
+                                <ul class="weui-uploader__files" id="uploaderFiles">
+                                    <li class="weui-uploader__file" v-for="item,index in imgList" :style="{'background-image':'url('+item+')'}" @click="showMask(index)"></li>
+                                </ul>
+                                <div class="weui-uploader__input-box" v-show="imgList.length<maxPic">
+                                    <input id="uploaderInput" @change="uploadFileChange" class="weui-uploader__input" type="file" accept="image/*" multiple="">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
         <div class="weui-btn-area">
             <a class="weui-btn weui-btn_plain-primary" href="javascript:;" @click="goNext" id="showTooltips">下一步</a>
@@ -56,7 +55,10 @@ import util from '../assets/js/util.js'
             shopName: '',
             fileApi: util.api.host + util.api.fileApi,
             logo: '',
-            ifMaskDisplay: 'none'
+            maxPic : 1,
+            imgList: [],
+            ifMaskDisplay: 'none',
+            currentSelectLogoIndex: -1
           }
       },
       activated: function() {
@@ -64,12 +66,16 @@ import util from '../assets/js/util.js'
       },
       methods: {
         deleteLogo() {
-          this.logo = '';
+          if(this.currentSelectLogoIndex != -1) {
+            this.imgList.splice(this.currentSelectLogoIndex, 1);
+          }
         },
         hideMask() {
           this.ifMaskDisplay = 'none';
         },
-        showMask() {
+        showMask(i) {
+          this.logo = this.imgList[i];
+          this.currentSelectLogoIndex = i;
           this.ifMaskDisplay = 'block';
         },
         uploadFileChange(e) {
@@ -87,6 +93,7 @@ import util from '../assets/js/util.js'
             var data = response.body;
             if(data.code == 0) {
               this.logo = data.url;
+              this.imgList.push(data.url);
             } else {
               alert(data.msg);
             }
@@ -101,7 +108,7 @@ import util from '../assets/js/util.js'
           },
           {
             name: '店铺LOGO',
-            data: this.logo
+            data: this.imgList.join('|')
           }
             ]);
           return flag;
